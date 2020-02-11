@@ -10,4 +10,10 @@
     <string name="easyButton">Facile</string>
     <string name="hardButton">Difficile</string>
 
+    <string name="login">Connexion</string>
+    <string name="signup">Inscription</string>
+    <string name="email">Adresse mail</string>
+    <string name="password">Mot de passe</string>
+    <string name="confirm">Confirmez le mot de passe</string>
+    <string name="informations">Remplissez le formulaire, c\'est rapide !</string>
 </resources>
