@@ -4,6 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/greenBackground"
     tools:context=".ProfileActivity">
 
+    <ImageView
+        android:id="@+id/userPictureView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/white"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/userPictureView"
+        app:layout_constraintTop_toTopOf="@+id/userPictureView" />
+
+    <TextView
+        android:id="@+id/personalScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/userPictureView"
+        app:layout_constraintTop_toBottomOf="@+id/usernameTextView" />
+
+    <TextView
+        android:id="@+id/personalDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/userPictureView"
+        app:layout_constraintTop_toBottomOf="@+id/personalScoreTextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lastGamesRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="585dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="@+id/lastGamesTextView"
+        app:layout_constraintTop_toBottomOf="@+id/lastGamesTextView" />
+
+    <TextView
+        android:id="@+id/lastGamesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/userPictureView"
+        app:layout_constraintTop_toBottomOf="@+id/userPictureView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
