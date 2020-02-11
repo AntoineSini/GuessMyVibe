@@ -9,6 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".MultiplayersGameActivity" />
+        <activity android:name=".JoinRoomActivity" />
+        <activity android:name=".NewRoomActivity" />
+        <activity android:name=".SoloHardGameActivity" />
+        <activity android:name=".SoloEasyGameActivity" />
+        <activity android:name=".LevelActivity" />
+        <activity android:name=".MultiActivity" />
+        <activity android:name=".SoloActivity" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
