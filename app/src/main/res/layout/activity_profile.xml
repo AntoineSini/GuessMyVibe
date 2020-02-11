@@ -22,8 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:text="@string/userNameTextView"
         android:textColor="@color/white"
-        android:text="TextView"
+        android:fontFamily="casual"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/userPictureView"
         app:layout_constraintTop_toTopOf="@+id/userPictureView" />
 
@@ -33,8 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="@string/personalScoreTextView"
         android:textColor="@color/white"
-        android:text="TextView"
+        android:fontFamily="casual"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/userPictureView"
         app:layout_constraintTop_toBottomOf="@+id/usernameTextView" />
 
@@ -44,8 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:text="@string/personalDescriptionTextView"
         android:textColor="@color/white"
-        android:text="TextView"
+        android:fontFamily="casual"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/userPictureView"
         app:layout_constraintTop_toBottomOf="@+id/personalScoreTextView" />
 
@@ -62,8 +68,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="TextView"
+        android:text="@string/lastGamesTextView"
         android:textColor="@color/white"
+        android:fontFamily="casual"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/userPictureView"
         app:layout_constraintTop_toBottomOf="@+id/userPictureView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
