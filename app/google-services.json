@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "563832069225",
+    "firebase_url": "https://guessmyvibe.firebaseio.com",
+    "project_id": "guessmyvibe",
+    "storage_bucket": "guessmyvibe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563832069225:android:0b5ff12b76e4ec82ae56f8",
+        "android_client_info": {
+          "package_name": "fr.isen.guessmyvibe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "563832069225-2of4jd9krfvb14fvfqcjtj7enkrfhjmc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmcFvXi_7tkVvsiuuM6Lk-xnFe02EAsiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "563832069225-2of4jd9krfvb14fvfqcjtj7enkrfhjmc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

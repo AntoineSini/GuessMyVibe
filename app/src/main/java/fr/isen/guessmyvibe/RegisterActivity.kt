@@ -22,6 +22,9 @@ class RegisterActivity : AppCompatActivity() {
             if(passwordTextInput.text.toString() == confirmTextInput.text.toString()){
                 createUser(emailTextInput.text.toString(),passwordTextInput.text.toString())
             }
+            else {
+                Toast.makeText(baseContext, "Les mots de passe sont différents!" , Toast.LENGTH_SHORT).show()
+            }
         }
     }
     fun createUser(email: String, password: String){
@@ -36,7 +39,9 @@ class RegisterActivity : AppCompatActivity() {
                     // If sign in fails, display a message to the user.
                     Log.w("antoine", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Registration failed" , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Mot de passe de 6 caractères minimum" , Toast.LENGTH_SHORT).show()
                 }
             }
+
     }
 }
