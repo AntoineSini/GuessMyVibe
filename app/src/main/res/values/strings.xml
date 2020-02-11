@@ -9,7 +9,9 @@
     <string name="levelTextView">Choisir un niveau de jeu</string>
     <string name="easyButton">Facile</string>
     <string name="hardButton">Difficile</string>
-
+    <string name="multiTextView">Choisir une option multi-joueurs</string>
+    <string name="createButton">Creer une salle de jeu</string>
+    <string name="joinRoomButton">Rejoindre une salle de jeu</string>
     <string name="login">Connexion</string>
     <string name="signup">Inscription</string>
     <string name="email">Adresse mail</string>
