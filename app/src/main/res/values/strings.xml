@@ -3,7 +3,7 @@
     <string name="soloButton">Solo</string>
     <string name="multiplayersButton">Multi joueurs</string>
     <string name="profileButton">Profil</string>
-    <string name="joinRoomTextView">Rejoindre une salle de jeu</string>
+    <string name="joinRoomTextView">Entrez l\'ID de la salle</string>
     <string name="idRoomTextInputLayout">Entrez l\'ID de la salle de jeu</string>
     <string name="joinButton">Rejoindre</string>
     <string name="levelTextView">Choisir un niveau de jeu</string>

@@ -19,13 +19,13 @@ class MultiActivity : AppCompatActivity() {
     {
         createButton.setOnClickListener{
             intent= Intent(this, NewRoomActivity::class.java)
+            startActivity(intent)
 
         }
         joinRoomButton.setOnClickListener{
             intent= Intent(this, JoinRoomActivity::class.java)
-
+            startActivity(intent)
         }
 
-        startActivity(intent)
     }
 }
