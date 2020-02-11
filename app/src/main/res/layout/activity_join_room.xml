@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="casual"
             android:hint="@string/joinRoomTextView" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

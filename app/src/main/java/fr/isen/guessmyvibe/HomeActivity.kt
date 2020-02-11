@@ -20,16 +20,21 @@ class HomeActivity : AppCompatActivity() {
     {
         soloButton.setOnClickListener{
             intent= Intent(this, LevelActivity::class.java)
+            startActivity(intent)
+
 
         }
         multiplayersButton.setOnClickListener{
             intent= Intent(this, MultiActivity::class.java)
+            startActivity(intent)
+
 
         }
         profileButton.setOnClickListener{
             intent= Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+
 
         }
-        startActivity(intent)
     }
 }

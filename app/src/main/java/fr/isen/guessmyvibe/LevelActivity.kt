@@ -19,13 +19,16 @@ class LevelActivity : AppCompatActivity() {
     {
         easyButton.setOnClickListener{
             intent= Intent(this, SoloEasyGameActivity::class.java)
+            startActivity(intent)
+
 
         }
         hardButton.setOnClickListener{
             intent= Intent(this, SoloHardGameActivity::class.java)
+            startActivity(intent)
+
 
         }
 
-        startActivity(intent)
     }
 }
