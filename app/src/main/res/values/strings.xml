@@ -6,5 +6,8 @@
     <string name="joinRoomTextView">Rejoindre une salle de jeu</string>
     <string name="idRoomTextInputLayout">Entrez l\'\ID de la salle de jeu</string>
     <string name="joinButton">Rejoindre</string>
+    <string name="levelTextView">Choisir un niveau de jeu</string>
+    <string name="easyButton">Facile</string>
+    <string name="hardButton">Difficile</string>
 
 </resources>
