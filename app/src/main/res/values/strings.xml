@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GuessMyVibe</string>
+    <string name="soloButton">Solo</string>
+    <string name="multiplayersButton">Multi joueurs</string>
+    <string name="profileButton">Profil</string>
+
 </resources>
