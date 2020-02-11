@@ -4,6 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/greenBackground"
     tools:context=".MultiActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="312dp"
+        android:layout_height="202dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/guessmyvibepng"
+        tools:srcCompat="@drawable/guessmyvibepng" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
