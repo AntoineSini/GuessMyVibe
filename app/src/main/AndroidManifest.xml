@@ -17,7 +17,6 @@
         <activity android:name=".SoloEasyGameActivity" />
         <activity android:name=".LevelActivity" />
         <activity android:name=".MultiActivity" />
-        <activity android:name=".SoloActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity"></activity>

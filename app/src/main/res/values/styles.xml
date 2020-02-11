@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/greenButton</item>
         <item name="colorPrimaryDark">@color/greenBackground</item>
         <item name="colorAccent">@color/greenPale</item>
+        <item name="android:textColorHint">@color/greenYellow</item>
+
     </style>
 
 </resources>
