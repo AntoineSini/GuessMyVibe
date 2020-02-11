@@ -14,7 +14,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        //Initialize
         auth = FirebaseAuth.getInstance()
         signupButton.setOnClickListener{
             intent = Intent(this, RegisterActivity::class.java)
