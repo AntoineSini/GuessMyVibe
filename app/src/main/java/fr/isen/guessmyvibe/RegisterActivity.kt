@@ -6,42 +6,70 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import fr.isen.guessmyvibe.classes.User
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
+    lateinit var auth: FirebaseAuth
+    lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
         auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
 
         registerButton.setOnClickListener{
             if(passwordTextInput.text.toString() == confirmTextInput.text.toString()){
                 createUser(emailTextInput.text.toString(),passwordTextInput.text.toString())
             }
             else {
-                Toast.makeText(baseContext, "Les mots de passe sont différents!" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Les mots de passe sont différents!" , Toast.LENGTH_SHORT).show()
             }
         }
     }
+
     fun createUser(email: String, password: String){
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
+        if (email.isBlank()){
+            Toast.makeText(this, "Adresse mail vide", Toast.LENGTH_SHORT).show()
+        }
+        else if (password.isBlank()){
+            Toast.makeText(this, "Mot de passe vide", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user'sq information
                     Log.d("antoine", "createUserWithEmail:success")
+                    addToDatabase()
                     intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("antoine", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Registration failed" , Toast.LENGTH_SHORT).show()
-                    Toast.makeText(baseContext, "Mot de passe de 6 caractères minimum" , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Mot de passe de 6 caractères minimum",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
+        }
+    }
 
+    fun addToDatabase(){
+        auth.currentUser?.uid
+
+        val newUser = User(auth.currentUser?.uid, emailTextInput.text.toString(),
+            null, null, null, 0)
+
+        val key = database.child("user").push().key ?: ""
+        database.child("user").child(key).setValue(newUser)
     }
 }
