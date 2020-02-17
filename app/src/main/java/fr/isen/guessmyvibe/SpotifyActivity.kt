@@ -1,7 +1,7 @@
 package fr.isen.guessmyvibe
 
-import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,21 +18,21 @@ class SpotifyActivity : AppCompatActivity() {
     private var mSpotifyAppRemote: SpotifyAppRemote? = null
     private var CONNECTED = 0
 
+    var counter = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spotify)
 
+
         playButton.setOnClickListener(){
             if (CONNECTED == 1){
-                connected()
+                playSong()
             }
-        }
-        stopButton.setOnClickListener(){
-                Toast.makeText(this, "stop btn", Toast.LENGTH_LONG).show()
-                onStop()
 
         }
-
+        
     }
 
     override fun onStart() {
@@ -60,15 +60,50 @@ class SpotifyActivity : AppCompatActivity() {
             })
     }
 
-    private fun connected() { // Then we will write some more code here.
-        mSpotifyAppRemote?.getPlayerApi()?.play("spotify:playlist:37i9dQZF1DX4WpYT2fah9c")
+    private fun playSong() { // Then we will write some more code here.
+        mSpotifyAppRemote?.getPlayerApi()?.play("spotify:track:24Yi9hE78yPEbZ4kxyoXAI")
+        Toast.makeText(this, "played", Toast.LENGTH_LONG).show()
+
+       startTimer()
+
     }
+
+    fun startTimer() {
+
+        object : CountDownTimer(30000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val time : Int
+                time = 10 - counter
+                if(time > 0){
+                    textView.setText(time.toString())
+                }
+                counter++
+                if (time == 0)
+                {
+                    onFinish()
+                }
+            }
+
+            override fun onFinish() {
+                textView.setText("FINISH!!")
+                pauseSong()
+            }
+        }.start()
+
+    }
+
+
+
 
     override fun onStop() {
         super.onStop()
         // Aaand we will finish off here.
-        mSpotifyAppRemote?.getPlayerApi()?.pause()
         SpotifyAppRemote.disconnect(mSpotifyAppRemote)
+    }
+
+    fun pauseSong(){
+        mSpotifyAppRemote?.getPlayerApi()?.pause()
+        Toast.makeText(this, "paused", Toast.LENGTH_LONG).show()
 
 
     }
