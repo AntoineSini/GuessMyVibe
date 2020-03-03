@@ -35,23 +35,19 @@ class SpotifyActivity : AppCompatActivity() {
 
         if(STEP <10)
         {
-            response1.setOnClickListener(){
+            response1.setOnClickListener {
                 STEP = playNext(STEP)
             }
-            response2.setOnClickListener(){
+            response2.setOnClickListener {
                 STEP = playNext(STEP)
             }
-            response3.setOnClickListener(){
+            response3.setOnClickListener {
                 STEP = playNext(STEP)
             }
-            response4.setOnClickListener(){
+            response4.setOnClickListener {
                 STEP = playNext(STEP)
             }
         }
-
-        searchButton.setOnClickListener(){
-        }
-
 
     }
 
@@ -68,7 +64,6 @@ class SpotifyActivity : AppCompatActivity() {
             object : ConnectionListener{
                 override fun onConnected(spotifyAppRemote: SpotifyAppRemote) {
                     mSpotifyAppRemote = spotifyAppRemote
-                    Log.d("MainActivity", "Connected! Yay!")
                     // Now you can start interacting with App Remote
                     CONNECTED = 1
                     playSong()
@@ -82,25 +77,9 @@ class SpotifyActivity : AppCompatActivity() {
     }
 
     private fun playSong() { // Then we will write some more code here.
-        mSpotifyAppRemote?.getPlayerApi()?.play("spotify:playlist:7nWLr7ueGPIjP6Guk9TIc8")
-        Toast.makeText(this, "played", Toast.LENGTH_LONG).show()
-
-
-
-        val playerState = mSpotifyAppRemote?.playerApi?.playerState
-
-        playerState?.setResultCallback {
-            Toast.makeText(this,it.track.name, Toast.LENGTH_LONG).show()
-        }
-
-       // val playerStateResult = playerState?.await(5, TimeUnit.SECONDS)
-
-       // val track: Track? = playerStateResult?.data?.track
-
-
-
-
-        //startTimer()
+        mSpotifyAppRemote?.playerApi?.play("spotify:playlist:7nWLr7ueGPIjP6Guk9TIc8")
+        getTrackName()
+        startTimer()
     }
 
     fun startTimer() {
@@ -120,36 +99,25 @@ class SpotifyActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
+                counter=0
                 textView.setText("FINISH!!")
                 playNext(STEP)
                 STATE =1
-
             }
         }.start()
     }
+
+
     fun playNext(s : Int) : Int{
         var step : Int
         step = s
        if(step < 10)
        {
-           mSpotifyAppRemote?.getPlayerApi()?.skipNext()
-           Toast.makeText(this, "played", Toast.LENGTH_LONG).show()
-
-
-           val playerStateCall: CallResult<PlayerState>? = mSpotifyAppRemote?.playerApi?.playerState
-
-
-           val playerStateResult: Result<PlayerState>? = playerStateCall?.await(10, TimeUnit.SECONDS)
-
-
-
-           val track: Track? = playerStateResult?.data?.track
-
-           Toast.makeText(this,track?.name, Toast.LENGTH_LONG).show()
-           //startTimer()
+           mSpotifyAppRemote?.playerApi?.skipNext()
+           getTrackName()
+           startTimer()
            step++
            idSong.setText("Son " + step.toString() + "/10")
-
        }
         return step
     }
@@ -164,12 +132,18 @@ class SpotifyActivity : AppCompatActivity() {
     }
 
     fun pauseSong(){
-        mSpotifyAppRemote?.getPlayerApi()?.pause()
-
-
+        mSpotifyAppRemote?.playerApi?.pause()
     }
 
     fun getTrackName(){
+
+        val playerStateCall: CallResult<PlayerState>? = mSpotifyAppRemote?.playerApi?.playerState
+
+        val playerStateResult: Result<PlayerState>? = playerStateCall?.await(10, TimeUnit.SECONDS)
+
+        val track: Track? = playerStateResult?.data?.track
+
+        Toast.makeText(this,track?.name, Toast.LENGTH_LONG).show()
 
     }
 
