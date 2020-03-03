@@ -10,7 +10,20 @@
     <string name="easyButton">Facile</string>
     <string name="hardButton">Difficile</string>
     <string name="multiTextView">Choisir une option multi-joueurs</string>
+    <string name="categoryTextView">Choisir un theme de jeu</string>
     <string name="createButton">Creer une salle de jeu</string>
+    <string name="popButton">Pop</string>
+    <string name="rockButton">Rock</string>
+    <string name="jazzButton">Jazz</string>
+    <string name="bluesButton">Blues</string>
+    <string name="rapButton">Rap</string>
+    <string name="frenchButton">Francais</string>
+    <string name="usButton">US</string>
+    <string name="seventiesButton">70\'s</string>
+    <string name="eightiesButton">80\'s</string>
+    <string name="ninetiesButton">90\'s</string>
+    <string name="twothousandsButton">2000\'s</string>
+
     <string name="newRoomTextView">Creer une salle de jeu</string>
     <string name="joinRoomButton">Rejoindre une salle de jeu</string>
     <string name="idRoomTextView">ID de la salle : </string>
