@@ -46,7 +46,7 @@ class RegisterActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user'sq information
                     Log.d("antoine", "createUserWithEmail:success")
-                    addToDatabase()
+                    addUserToDatabase()
                     intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -63,12 +63,12 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun addToDatabase(){
-        auth.currentUser?.uid
-
-        val newUser = User(auth.currentUser?.uid, emailTextInput.text.toString(), null, null, null, 0)
-
-        val key = database.child("user").push().key ?: ""
-        database.child("user").child(key).setValue(newUser)
+    fun addUserToDatabase(){
+        val id = auth.currentUser?.uid
+        id?.let{
+            val newUser = User(it, emailTextInput.text.toString(), null, null, null, "0", null)
+            //val key = database.child("user").push().key ?: ""
+            database.child("user").child(it).setValue(newUser)
+        }
     }
 }
