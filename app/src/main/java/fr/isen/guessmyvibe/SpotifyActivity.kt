@@ -222,6 +222,7 @@ class SpotifyActivity : AppCompatActivity() {
                 time = time - counter
                 if(time > 0){
                     textView.setText(time.toString())
+                    progressBar.setProgress(time * 10)
                 }
                 counter++
                 if (time == 0)
