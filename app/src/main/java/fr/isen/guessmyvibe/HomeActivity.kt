@@ -54,8 +54,7 @@ class HomeActivity : AppCompatActivity() {
     fun buttonsListener()
     {
         soloButton.setOnClickListener{
-            //intent= Intent(this, LevelActivity::class.java)
-            intent= Intent(this, CategoryActivity::class.java)
+            intent= Intent(this, ThemeActivity::class.java)
             startActivity(intent)
 
 

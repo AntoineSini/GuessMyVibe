@@ -57,13 +57,15 @@ class SpotifyActivity : AppCompatActivity() {
                 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun onConnected(spotifyAppRemote: SpotifyAppRemote) {
                     mSpotifyAppRemote = spotifyAppRemote
+                    Log.e("Connexion", "connexion ok")
+
                     // Now you can start interacting with App Remote
-                    CONNECTED = 1
                     playPlaylist()
                 }
 
                 override fun onFailure(throwable: Throwable) {
-                    Log.e("MainActivity", throwable.message, throwable)
+                    Log.e("Connexion failed", throwable.message, throwable)
+
                     showConnexionProblem()
                     // Something went wrong when attempting to connect! Handle errors here
                 }
