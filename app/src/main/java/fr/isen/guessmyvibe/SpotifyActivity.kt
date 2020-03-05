@@ -2,7 +2,6 @@ package fr.isen.guessmyvibe
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -39,23 +38,9 @@ class SpotifyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spotify)
 
-
-        if(STEP <10)
-        {
-            response1.setOnClickListener {
-                STEP = playNext(STEP)
-            }
-            response2.setOnClickListener {
-                STEP = playNext(STEP)
-            }
-            response3.setOnClickListener {
-                STEP = playNext(STEP)
-            }
-            response4.setOnClickListener {
-                STEP = playNext(STEP)
-            }
+        response1.setOnClickListener{
+            timer()
         }
-
     }
 
     override fun onStart() {
@@ -69,10 +54,12 @@ class SpotifyActivity : AppCompatActivity() {
 
         SpotifyAppRemote.connect(this, connectionParams,
             object : Connector.ConnectionListener {
+                @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
                 override fun onConnected(spotifyAppRemote: SpotifyAppRemote) {
                     mSpotifyAppRemote = spotifyAppRemote
                     // Now you can start interacting with App Remote
                     CONNECTED = 1
+                    playPlaylist()
                 }
 
                 override fun onFailure(throwable: Throwable) {
@@ -100,16 +87,20 @@ class SpotifyActivity : AppCompatActivity() {
         alert.show()
     }
 
+    fun showButtonsText(){
+
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun playPlaylist() { // Then we will write some more code here.
-        var playlist = getPlaylist()
-
-        mSpotifyAppRemote?.playerApi?.play(playlist)
-
-        getTrackName()
-        startTimer()
+        mSpotifyAppRemote?.playerApi?.play(getPlaylist())
+        showButtonsText()
+        timer()
     }
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getPlaylist() : String
@@ -214,45 +205,35 @@ class SpotifyActivity : AppCompatActivity() {
 
 
 
-    fun startTimer() {
+    fun timer() {
 
-        object : CountDownTimer(30000, 1000) {
+        object : CountDownTimer(11000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                var time = 10
-                time = time - counter
-                if(time > 0){
-                    textView.setText(time.toString())
-                    progressBar.setProgress(time * 10)
-                }
-                counter++
-                if (time == 0)
-                {
-                    onFinish()
-                }
+
+                textView.setText((millisUntilFinished/1000).toString())
+                progressBar.setProgress((millisUntilFinished/1000).toInt() * 10)
+
             }
 
             override fun onFinish() {
-                counter=0
                 textView.setText("FINISH!!")
-                playNext(STEP)
+                playNextSong()
                 STATE =1
             }
         }.start()
     }
 
 
-    fun playNext(s : Int) : Int{
-        var step : Int
-        step = s
-       if(step < 10)
+    fun playNextSong(){
+
+       if(STEP < 10)
        {
            mSpotifyAppRemote?.playerApi?.skipNext()
            getTrackName()
-           startTimer()
-           step++
-           idSong.setText("Son " + step.toString() + "/10")
+           timer()
+           STEP++
+           idSong.setText("Son " + STEP.toString() + "/10")
        }
-        return step
     }
 
 
@@ -268,7 +249,7 @@ class SpotifyActivity : AppCompatActivity() {
         mSpotifyAppRemote?.playerApi?.pause()
     }
 
-    fun getTrackName(){
+    fun getTrackName() : String? {
 
         val playerStateCall: CallResult<PlayerState>? = mSpotifyAppRemote?.playerApi?.playerState
 
@@ -276,7 +257,7 @@ class SpotifyActivity : AppCompatActivity() {
 
         val track: Track? = playerStateResult?.data?.track
 
-        Toast.makeText(this,track?.name, Toast.LENGTH_LONG).show()
+        return track?.name
 
     }
 

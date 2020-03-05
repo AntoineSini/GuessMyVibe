@@ -23,6 +23,10 @@
     <string name="eightiesButton">80\'s</string>
     <string name="ninetiesButton">90\'s</string>
     <string name="twothousandsButton">2000\'s</string>
+    <string name="response1"></string>
+    <string name="response2"></string>
+    <string name="response3"></string>
+    <string name="response4"></string>
 
     <string name="newRoomTextView">Creer une salle de jeu</string>
     <string name="joinRoomButton">Rejoindre une salle de jeu</string>
