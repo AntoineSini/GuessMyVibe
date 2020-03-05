@@ -7,7 +7,10 @@
     <string name="idRoomTextInputLayout">Entrez l\'ID de la salle de jeu</string>
     <string name="joinButton">Rejoindre</string>
     <string name="levelTextView">Choisir un niveau de jeu</string>
+    <string name="endTextView">Partie terminée !!</string>
+    <string name="pointsTextView"></string>
     <string name="easyButton">Facile</string>
+    <string name="replayButton">Rejouer</string>
     <string name="hardButton">Difficile</string>
     <string name="multiTextView">Choisir une option multi-joueurs</string>
     <string name="categoryTextView">Choisir un theme de jeu</string>
@@ -23,6 +26,10 @@
     <string name="eightiesButton">80\'s</string>
     <string name="ninetiesButton">90\'s</string>
     <string name="twothousandsButton">2000\'s</string>
+    <string name="response1"></string>
+    <string name="response2"></string>
+    <string name="response3"></string>
+    <string name="response4"></string>
 
     <string name="newRoomTextView">Creer une salle de jeu</string>
     <string name="joinRoomButton">Rejoindre une salle de jeu</string>
