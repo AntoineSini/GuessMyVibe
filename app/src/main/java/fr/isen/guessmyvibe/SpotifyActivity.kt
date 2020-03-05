@@ -30,7 +30,7 @@ class SpotifyActivity : AppCompatActivity() {
     private var CONNECTED = 0
     private var STATE = 0
     private var STEP = 1
-    private var CATEGORY = 0
+    private var CATEGORY : String ? = null
 
     var counter = 0
 
@@ -118,7 +118,7 @@ class SpotifyActivity : AppCompatActivity() {
         var random = ThreadLocalRandom.current().nextInt(1, 5)
 
 
-        if (CATEGORY == 1) //pop
+        if (CATEGORY == "Pop") //pop
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DWYVURwQHUqnN" // pop urbaine
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DX1ngEVM0lKrb" // pop internationale
@@ -127,7 +127,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:37i9dQZF1DWXti3N4Wp5xy" // pop party
         }
 
-        if (CATEGORY == 2) //rock
+        if (CATEGORY == "Rock") //rock
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DX8FwnYE6PRvL" // rock party
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DWWSuZL7uNdVA" // top of the rock
@@ -136,7 +136,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:37i9dQZF1DXcF6B6QPhFDv" // rock this
         }
 
-        if (CATEGORY == 3) //jazz
+        if (CATEGORY == "Jazz") //jazz
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DXbITWG1ZJKYt" // jazz classics
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DX1S1NduGwpsa" // jazz club
@@ -145,7 +145,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:37i9dQZF1DX2mmt7R81K2b" // jazz classical crossings
         }
 
-        if (CATEGORY == 4) //blues
+        if (CATEGORY == "Blues") //blues
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DXd9rSDyQguIk" // blues classics
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DXcFk5r8uS3l2" // blues roots
@@ -155,7 +155,7 @@ class SpotifyActivity : AppCompatActivity() {
         }
 
 
-        if (CATEGORY == 5) //rap
+        if (CATEGORY == "Rap") //rap
         {
             if (random == 1) playlist = "spotify:playlist:4l1CEhc7ZPbaEtiPdCSGbl" // rap francais 2020
             if (random == 2) playlist = "spotify:playlist:4oVXvXoJgYHsbcRPkKEWLe" // rap us
@@ -164,7 +164,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:44S09uTRLrW1xph1JD5lKJ" // rap punchline
         }
 
-        if (CATEGORY == 6) //70's
+        if (CATEGORY == "70") //70's
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DX7LGssahBoms" // annees 70
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DX7W8X7B8YNLZ" // generation 70
@@ -173,7 +173,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:1brybfKfiWT1sFitZOKpXO" // 70s disco party
         }
 
-        if (CATEGORY == 7) //80's
+        if (CATEGORY == "80") //80's
         {
             if (random == 1) playlist = "spotify:playlist:1b5JNI6c8TliOecILKg8Vw" // annees 80 france
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DWWl7MndYYxge" // annees 80
@@ -182,7 +182,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:37i9dQZF1DX4UtSsGT1Sbe" // all out 80s
         }
 
-        if (CATEGORY == 8) //90's
+        if (CATEGORY == "90") //90's
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DWWGI3DKkKGzJ" // annees 90
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DWXLbJb1PtkXq" // generation 90
@@ -191,7 +191,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:37i9dQZF1DXbTxeAdrVG2l" // all out 90s
         }
 
-        if (CATEGORY == 9) //2000's
+        if (CATEGORY == "2000") //2000's
         {
             if (random == 1) playlist = "spotify:playlist:37i9dQZF1DXacPj7eARo6k" // annees 2000
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DWSvv6VnIb3i0" // generation 2000
@@ -200,7 +200,7 @@ class SpotifyActivity : AppCompatActivity() {
             if (random == 5) playlist = "spotify:playlist:7oaBsni6C0xBGjjuDyzYxJ" // playlist 2000
         }
 
-        if (CATEGORY == 10) //France
+        if (CATEGORY == "France") //France
         {
             if (random == 1) playlist = "spotify:playlist:6QyJmYAjsOdQXG39V4teg9" // france
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DXd0Y4aXXQXWv" // essentiel de la variete francaise

@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_category.*
 
 class CategoryActivity : AppCompatActivity() {
 
-    private var CATEGORY = 0
+    private var CATEGORY : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,52 +22,52 @@ class CategoryActivity : AppCompatActivity() {
     fun buttonsListener(){
 
         popButton.setOnClickListener{
-            CATEGORY = 1
+            CATEGORY = "Pop"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         rockButton.setOnClickListener{
-            CATEGORY = 2
+            CATEGORY = "Rock"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         jazzButton.setOnClickListener{
-            CATEGORY = 3
+            CATEGORY = "Jazz"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         bluesButton.setOnClickListener{
-            CATEGORY = 4
+            CATEGORY = "Blues"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         rapButton.setOnClickListener{
-            CATEGORY = 5
+            CATEGORY = "Rap"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         seventiesButton.setOnClickListener{
-            CATEGORY = 6
+            CATEGORY = "70"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         eightiesButton.setOnClickListener{
-            CATEGORY = 7
+            CATEGORY = "80"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         ninetiesButton.setOnClickListener{
-            CATEGORY = 8
+            CATEGORY = "90"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         twothousandsButton.setOnClickListener{
-            CATEGORY = 9
+            CATEGORY = "2000"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
         frenchButton.setOnClickListener{
-            CATEGORY = 10
+            CATEGORY = "French"
             intent= Intent(this, LevelActivity::class.java)
             startActivity(intent)
         }
