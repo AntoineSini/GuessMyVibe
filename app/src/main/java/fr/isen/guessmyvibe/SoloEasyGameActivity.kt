@@ -2,6 +2,7 @@ package fr.isen.guessmyvibe
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -218,7 +219,6 @@ class SoloEasyGameActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                textView.setText("FINISH!!")
                 playNextSong()
                 STATE =1
             }
@@ -235,6 +235,10 @@ class SoloEasyGameActivity : AppCompatActivity() {
             timer()
             STEP++
             idSong.setText("Son " + STEP.toString() + "/10")
+        }
+        else{
+            intent= Intent(this, EndSoloActivity::class.java)
+            startActivity(intent)
         }
     }
 
