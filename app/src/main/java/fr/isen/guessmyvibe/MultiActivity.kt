@@ -40,33 +40,19 @@ class MultiActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 for (postSnapshot in p0.children) {
-                    val p = postSnapshot.value as HashMap<String, Any>
+                    val p = postSnapshot.value as HashMap<String, String>
                     if (p["id"] == auth.currentUser?.uid) {
-                        val id = p["id"] as String
-                        val email = p["email"] as String
-                        val birthday = p["birthday"] as String?
-                        val username = p["username"] as String?
-                        val age = p["age"] as String?
-                        val level = p["level"] as String
-                        /*val games = p["games"] as ArrayList<HashMap<String, Any>>
-                        val arrayGames = ArrayList<Game>()
-                        for(item in games){
-                            var diff : String?
-                            var theme : String?
-                            var status : String?
-                            var winner : String?
-                            for((k,v) in item){
-                                diff = if(k=="difficulty") v as String else null
-                                theme = if(k=="theme") v as String else null
-                                status = if(k=="status") v as String else null
-                                winner = if(k=="winner") v as String else null
-                            }
-                            val tmpGame = Game()
-                        }*/
+                        val id = p["id"]
+                        val email = p["email"]
+                        val birthday = p["birthday"]
+                        val username = p["username"]
+                        val age = p["age"]
+                        val level = p["level"]
+                        val id_games = p["id_games"] as ArrayList<String>?
                         id?.let { id ->
                             email?.let { email ->
                                 level?.let { level ->
-                                    currentUser = User(id, email, birthday, username, age, level, null)
+                                    currentUser = User(id, email, birthday, username, age, level, id_games)
                                 }
                             }
                         }
@@ -91,27 +77,27 @@ class MultiActivity : AppCompatActivity() {
 
     }
     fun createGameInDatabase(){
-        val arraySingleUser = ArrayList<User>()//liste des joueurs de la partie
+        val arraySingleUser = ArrayList<String>()//liste des id des joueurs de la partie
         currentUser?.let{//on ajoute le joueur courant
-            arraySingleUser.add(it)
+            arraySingleUser.add(it.id)
         }
-        val newGame = Game(arraySingleUser,null,"preparation",null,"","Multiplayer")
         val key = database.child("game").push().key ?: ""
+        val newGame = Game(key, arraySingleUser,null,"preparation",null,"","Multiplayer")
         database.child("game").child(key).setValue(newGame)
 
         val id = currentUser?.id
-        if(currentUser?.games == null) {
-            val arraySingleGame = ArrayList<Game>()
-            arraySingleGame.add(newGame)
+        if(currentUser?.id_games == null) {
+            val arraySingleGame = ArrayList<String>()
+            arraySingleGame.add(newGame.id)
             id?.let {
-                database.child("user").child(it).child("games").setValue(arraySingleGame)
+                database.child("user").child(it).child("id_games").setValue(arraySingleGame)
             }
         }
         else {
-            val arrayGames = currentUser?.games
-            arrayGames?.add(newGame)
+            val arrayGames = currentUser?.id_games
+            arrayGames?.add(newGame.id)
             id?.let {
-                database.child("user").child(it).child("games").setValue(arrayGames)
+                database.child("user").child(it).child("id_games").setValue(arrayGames)
             }
         }
     }

@@ -12,6 +12,6 @@ class User (
     var username : String?,
     var age : String?,
     var level : String,
-    var games: ArrayList<Game>?
+    var id_games: ArrayList<String>?
 
 )

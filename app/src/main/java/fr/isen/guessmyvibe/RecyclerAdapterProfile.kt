@@ -22,7 +22,7 @@ class RecyclerAdapterProfile(val content: ArrayList<Game>): RecyclerView.Adapter
     }
     class ProfileViewHolder(val view: View) : RecyclerView.ViewHolder(view){
         fun bind(content: Game?){
-            view.winner.text = content?.winner?.username
+            view.winner.text = content?.id_winner
             view.difficulty.text = content?.difficulty
         }
     }

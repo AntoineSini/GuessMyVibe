@@ -6,10 +6,11 @@ val statusList = listOf("Prepared", "Launched", "Finished")
 
 @IgnoreExtraProperties
 class Game (
-    var players : ArrayList<User>,
+    var id : String,
+    var id_players : ArrayList<String>,
     var scores : ArrayList<Score>? = null,
     var status : String,
-    var winner : User? = null,
+    var id_winner : String? = null,
     var theme : String,
     var difficulty : String
 )
