@@ -16,17 +16,19 @@ import com.squareup.picasso.Picasso
 import fr.isen.guessmyvibe.classes.User
 import kotlinx.android.synthetic.main.activity_profile.*
 import android.widget.ProgressBar
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import fr.isen.guessmyvibe.classes.Game
+import fr.isen.guessmyvibe.classes.Score
 
 
 class ProfileActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var database: DatabaseReference
     lateinit var storage: FirebaseStorage
-    var imageUri : Uri? = null
+    lateinit var currentUser: User
+    lateinit var arrayGamesOfUser: ArrayList<Game>
+    var imageUri: Uri? = null
     val GALLERY = 1
     val CAMERA = 2
     private val spinner: ProgressBar? = null
@@ -39,7 +41,7 @@ class ProfileActivity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
-        logOutButton.setOnClickListener{
+        logOutButton.setOnClickListener {
             auth.signOut()
             auth.addAuthStateListener {
                 intent = Intent(this, LoginActivity::class.java)
@@ -48,18 +50,26 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
         progressBar.visibility = View.GONE
-        userPpImageView.setOnClickListener{
+        userPpImageView.setOnClickListener {
             choosePhotoFromGallary()
 
         }
-        //savePPToStorage()
         displayPP()
+        findCurrentUser()
+        findGamesFromUser()
 
     }
-    fun savePPToStorage(){
+
+    fun recyclerAndDatabaseHandler() {
+        lastGamesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val adapter = RecyclerAdapterProfile(content = arrayGamesOfUser)
+        lastGamesRecyclerView.adapter = adapter
+    }
+
+    fun savePPToStorage() {
         val storageRef = storage.reference
         val uri = imageUri
-        if (uri != null){
+        if (uri != null) {
             val pathRef = storageRef.child("${auth.currentUser?.uid}/profilePicture")
             val uploadTask = pathRef.putFile(uri)
 
@@ -77,8 +87,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun displayPP(){
-        storage.reference.child("${auth.currentUser?.uid}/profilePicture").downloadUrl.addOnSuccessListener {
+    fun displayPP() {
+        storage.reference.child("${auth.currentUser?.uid}/profilePicture")
+            .downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).into(userPpImageView)
         }.addOnFailureListener {
             Toast.makeText(this, "Image failed to be displayed", Toast.LENGTH_SHORT)
@@ -86,25 +97,98 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    fun choosePhotoFromGallary(){
+    fun choosePhotoFromGallary() {
         val galleryIntent = Intent(
             Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
 
         startActivityForResult(galleryIntent, GALLERY)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK) {
-            if(requestCode == GALLERY) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLERY) {
                 data?.data?.let {
                     imageUri = it
                 }
-                    savePPToStorage()
+                savePPToStorage()
             }
-            if(requestCode == CAMERA) {
+            if (requestCode == CAMERA) {
 
             }
         }
+    }
+
+    fun findCurrentUser() {
+        val users = database.child("user")
+        val userListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == auth.currentUser?.uid) {
+                        val id = p["id"]
+                        val email = p["email"]
+                        val birthday = p["birthday"]
+                        val username = p["username"]
+                        val age = p["age"]
+                        val level = p["level"]
+                        val id_games = p["id_games"] as ArrayList<String>?
+                        id?.let { id ->
+                            email?.let { email ->
+                                level?.let { level ->
+                                    currentUser =
+                                        User(id, email, birthday, username, age, level, id_games)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        users.addValueEventListener(userListener)
+    }
+
+    fun findGamesFromUser() {
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val arrayGames = ArrayList<Game>()
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    currentUser?.id_games?.let{
+                        for(id in it){
+                            if(p["id"] == id){
+                                val id = p["id"] as String
+                                val id_players = p["id_players"] as ArrayList<String>
+                                //val scores = p["scores"] as ArrayList<>
+                                val status = p["status"] as String
+                                val id_winner = p["id_winner"]
+                                val theme = p["theme"] as String
+                                val difficulty = p["difficulty"] as String
+                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty))
+                            }
+                        }
+                    }
+                }
+                arrayGamesOfUser = arrayGames
+                recyclerAndDatabaseHandler()
+            }
+        }
+
+        games.addValueEventListener(gameListener)
     }
 }
