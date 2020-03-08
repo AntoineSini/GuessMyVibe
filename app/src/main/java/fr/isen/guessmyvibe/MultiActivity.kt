@@ -9,6 +9,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import fr.isen.guessmyvibe.classes.Game
 import fr.isen.guessmyvibe.classes.User
+import fr.isen.guessmyvibe.classes.statusList
 
 import kotlinx.android.synthetic.main.activity_multi.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -83,7 +84,7 @@ class MultiActivity : AppCompatActivity() {
             arraySingleUser.add(it.id)
         }
         val key = database.child("game").push().key ?: ""
-        val newGame = Game(key, arraySingleUser,null,"preparation",null,"","Multiplayer")
+        val newGame = Game(key, arraySingleUser,null,statusList[0],null,"","Multiplayer")
         database.child("game").child(key).setValue(newGame)
 
         val id = currentUser?.id

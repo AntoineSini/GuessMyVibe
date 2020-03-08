@@ -49,6 +49,7 @@ class ProfileActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
         progressBar.visibility = View.GONE
         userPpImageView.setOnClickListener {
             choosePhotoFromGallary()
@@ -60,7 +61,7 @@ class ProfileActivity : AppCompatActivity() {
 
     }
 
-    fun recyclerAndDatabaseHandler() {
+    fun recyclerHandler() {
         lastGamesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val adapter = RecyclerAdapterProfile(content = arrayGamesOfUser)
         lastGamesRecyclerView.adapter = adapter
@@ -185,7 +186,7 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
                 arrayGamesOfUser = arrayGames
-                recyclerAndDatabaseHandler()
+                recyclerHandler()
             }
         }
 
