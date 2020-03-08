@@ -26,6 +26,7 @@ class MultiActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance()
+
         findCurrentUser()
         buttonsListener()
     }
@@ -65,7 +66,7 @@ class MultiActivity : AppCompatActivity() {
     fun buttonsListener()
     {
         createButton.setOnClickListener{
-            createGameInDatabase()
+            addGameToDatabase()
             intent= Intent(this, NewRoomActivity::class.java)
             startActivity(intent)
 
@@ -76,7 +77,7 @@ class MultiActivity : AppCompatActivity() {
         }
 
     }
-    fun createGameInDatabase(){
+    fun addGameToDatabase(){
         val arraySingleUser = ArrayList<String>()//liste des id des joueurs de la partie
         currentUser?.let{//on ajoute le joueur courant
             arraySingleUser.add(it.id)

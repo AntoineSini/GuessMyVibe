@@ -12,7 +12,7 @@ class NewRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_room)
-
+        //idGameTextView.text =
         playButton.setOnClickListener{
             intent= Intent(this, MultiplayersGameActivity::class.java)
             startActivity(intent)
