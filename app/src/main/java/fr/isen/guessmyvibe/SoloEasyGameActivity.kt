@@ -69,7 +69,6 @@ class SoloEasyGameActivity : AppCompatActivity() {
                 flags?.results?.size?.let{
                     size=it
                 }
-             
 
             },
             Response.ErrorListener {

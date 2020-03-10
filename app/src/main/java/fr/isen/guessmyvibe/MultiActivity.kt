@@ -19,7 +19,7 @@ class MultiActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var database: DatabaseReference
     lateinit var storage : FirebaseStorage
-    lateinit var currentUser : User
+    var currentUser : User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi)
@@ -46,12 +46,10 @@ class MultiActivity : AppCompatActivity() {
                     if (p["id"] == auth.currentUser?.uid) {
                         val id = p["id"] as String
                         val email = p["email"] as String
-                        val birthday = p["birthday"]
                         val username = p["username"]
-                        val age = p["age"]
                         val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        currentUser = User(id, email, birthday, username, age, level, id_games)
+                        currentUser = User(id, email, username, level, id_games)
                     }
                 }
             }
@@ -73,12 +71,10 @@ class MultiActivity : AppCompatActivity() {
                     if (p["id"] == auth.currentUser?.uid) {
                         val id = p["id"] as String
                         val email = p["email"] as String
-                        val birthday = p["birthday"]
                         val username = p["username"]
-                        val age = p["age"]
                         val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        currentUser = User(id, email, birthday, username, age, level, id_games)
+                        currentUser = User(id, email, username, level, id_games)
                     }
                 }
                 addGameToDatabase()
@@ -102,15 +98,16 @@ class MultiActivity : AppCompatActivity() {
     }
     fun addGameToDatabase(){
         val arraySingleUser = ArrayList<String>()//liste des id des joueurs de la partie
-
-        arraySingleUser.add(currentUser.id)
-
+        currentUser?.id?.let {
+            arraySingleUser.add(it)
+        }
         val key = database.child("game").push().key ?: ""
-        val newGame = Game(key, arraySingleUser,null,statusList[0],null,"","Multiplayer",currentUser.id)
+        val newGame = Game(key, arraySingleUser,null,statusList[0],null,"","Multiplayer",currentUser?.id as String,"0")
         database.child("game").child(key).setValue(newGame)
 
-        val id = currentUser.id
-        if(currentUser.id_games == null) {
+
+        val id = currentUser?.id
+        if(currentUser?.id_games == null) {
             val arraySingleGame = ArrayList<String>()
             arraySingleGame.add(newGame.id)
             id?.let {
@@ -118,7 +115,7 @@ class MultiActivity : AppCompatActivity() {
             }
         }
         else {
-            val arrayGames = currentUser.id_games
+            val arrayGames = currentUser?.id_games
             arrayGames?.add(newGame.id)
             id?.let {
                 database.child("user").child(it).child("id_games").setValue(arrayGames)
