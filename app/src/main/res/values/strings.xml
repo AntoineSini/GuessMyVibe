@@ -30,8 +30,7 @@
     <string name="response2"></string>
     <string name="response3"></string>
     <string name="response4"></string>
-
-    <string name="newRoomTextView">Creer une salle de jeu</string>
+    <string name="newRoomTextView">Bienvenue dans le salon !</string>
     <string name="joinRoomButton">Rejoindre une salle de jeu</string>
     <string name="idRoomTextView">ID de la salle : </string>
     <string name="userNameTextView">Nom d\'utilisateur</string>

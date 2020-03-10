@@ -9,6 +9,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import fr.isen.guessmyvibe.classes.Game
 import fr.isen.guessmyvibe.classes.User
+import fr.isen.guessmyvibe.classes.statusList
 
 import kotlinx.android.synthetic.main.activity_multi.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -26,6 +27,7 @@ class MultiActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance()
+
         findCurrentUser()
         buttonsListener()
     }
@@ -65,7 +67,7 @@ class MultiActivity : AppCompatActivity() {
     fun buttonsListener()
     {
         createButton.setOnClickListener{
-            createGameInDatabase()
+            addGameToDatabase()
             intent= Intent(this, NewRoomActivity::class.java)
             startActivity(intent)
 
@@ -76,13 +78,13 @@ class MultiActivity : AppCompatActivity() {
         }
 
     }
-    fun createGameInDatabase(){
+    fun addGameToDatabase(){
         val arraySingleUser = ArrayList<String>()//liste des id des joueurs de la partie
         currentUser?.let{//on ajoute le joueur courant
             arraySingleUser.add(it.id)
         }
         val key = database.child("game").push().key ?: ""
-        val newGame = Game(key, arraySingleUser,null,"preparation",null,"","Multiplayer")
+        val newGame = Game(key, arraySingleUser,null,statusList[0],null,"","Multiplayer")
         database.child("game").child(key).setValue(newGame)
 
         val id = currentUser?.id

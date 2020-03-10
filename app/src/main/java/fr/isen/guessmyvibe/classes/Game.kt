@@ -2,7 +2,7 @@ package fr.isen.guessmyvibe.classes
 
 import com.google.firebase.database.IgnoreExtraProperties
 
-val statusList = listOf("Prepared", "Launched", "Finished")
+val statusList = listOf("Selection", "Current", "Finished")
 
 @IgnoreExtraProperties
 class Game (
