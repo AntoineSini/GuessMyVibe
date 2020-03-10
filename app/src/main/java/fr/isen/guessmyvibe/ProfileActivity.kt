@@ -20,6 +20,16 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isen.guessmyvibe.classes.Game
 import fr.isen.guessmyvibe.classes.Score
+import android.R.string.cancel
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.text.InputType
+import android.widget.EditText
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -53,14 +63,39 @@ class ProfileActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         userPpImageView.setOnClickListener {
             choosePhotoFromGallary()
-
+        }
+        usernameTextView.setOnClickListener{
+            alertDialog("Nom d'utilisateur")
         }
         displayPP()
+
         findCurrentUser()
         findGamesFromUser()
 
     }
+    fun alertDialog(title : String){
+        val builder = AlertDialog.Builder(this)
+        val input = EditText(this)
+        with(builder){
+            setTitle(title)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            setView(input)
+            setPositiveButton("OK"){ _, _ ->
+                database.child("user").child(currentUser.id).child("username").setValue(input.text.toString())
+                findCurrentUser()
+            }
+            setNegativeButton("Cancel"){ dialog, _ ->
+                    dialog.cancel()
+            }
 
+            show()
+        }
+    }
+    fun textAdapt(){
+        if (currentUser.username != null) {
+            usernameTextView.text = currentUser.username
+        }
+    }
     fun recyclerHandler() {
         lastGamesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val adapter = RecyclerAdapterProfile(content = arrayGamesOfUser)
@@ -107,21 +142,6 @@ class ProfileActivity : AppCompatActivity() {
         startActivityForResult(galleryIntent, GALLERY)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == GALLERY) {
-                data?.data?.let {
-                    imageUri = it
-                }
-                savePPToStorage()
-            }
-            if (requestCode == CAMERA) {
-
-            }
-        }
-    }
-
     fun findCurrentUser() {
         val users = database.child("user")
         val userListener = object : ValueEventListener {
@@ -135,23 +155,17 @@ class ProfileActivity : AppCompatActivity() {
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
                     if (p["id"] == auth.currentUser?.uid) {
-                        val id = p["id"]
-                        val email = p["email"]
+                        val id = p["id"] as String
+                        val email = p["email"] as String
                         val birthday = p["birthday"]
                         val username = p["username"]
                         val age = p["age"]
-                        val level = p["level"]
+                        val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        id?.let { id ->
-                            email?.let { email ->
-                                level?.let { level ->
-                                    currentUser =
-                                        User(id, email, birthday, username, age, level, id_games)
-                                }
-                            }
-                        }
+                        currentUser = User(id, email, birthday, username, age, level, id_games)
                     }
                 }
+                textAdapt()
             }
         }
         users.addValueEventListener(userListener)
@@ -170,7 +184,7 @@ class ProfileActivity : AppCompatActivity() {
                 val arrayGames = ArrayList<Game>()
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
-                    currentUser?.id_games?.let{
+                    currentUser.id_games?.let{
                         for(id in it){
                             if(p["id"] == id){
                                 val id = p["id"] as String
@@ -180,7 +194,8 @@ class ProfileActivity : AppCompatActivity() {
                                 val id_winner = p["id_winner"]
                                 val theme = p["theme"] as String
                                 val difficulty = p["difficulty"] as String
-                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty))
+                                val id_owner = p["id_owner"] as String
+                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty,id_owner))
                             }
                         }
                     }
@@ -191,5 +206,20 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         games.addValueEventListener(gameListener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLERY) {
+                data?.data?.let {
+                    imageUri = it
+                }
+                savePPToStorage()
+            }
+            if (requestCode == CAMERA) {
+
+            }
+        }
     }
 }

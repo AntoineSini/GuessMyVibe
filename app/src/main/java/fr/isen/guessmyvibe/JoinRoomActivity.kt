@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -16,7 +17,7 @@ class JoinRoomActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var database: DatabaseReference
     lateinit var storage : FirebaseStorage
-    var currentUser : User? = null
+    lateinit var currentUser : User
     var game : Game? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class JoinRoomActivity : AppCompatActivity() {
             findGameById(joinRoomTextInput.text.toString())
         }
     }
+
     fun findCurrentUser() {
         val users = database.child("user")
         val userListener = object : ValueEventListener {
@@ -45,21 +47,14 @@ class JoinRoomActivity : AppCompatActivity() {
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
                     if (p["id"] == auth.currentUser?.uid) {
-                        val id = p["id"]
-                        val email = p["email"]
+                        val id = p["id"] as String
+                        val email = p["email"] as String
                         val birthday = p["birthday"]
                         val username = p["username"]
                         val age = p["age"]
-                        val level = p["level"]
+                        val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        id?.let { id ->
-                            email?.let { email ->
-                                level?.let { level ->
-                                    currentUser =
-                                        User(id, email, birthday, username, age, level, id_games)
-                                }
-                            }
-                        }
+                        currentUser = User(id, email, birthday, username, age, level, id_games)
                     }
                 }
             }
@@ -87,7 +82,8 @@ class JoinRoomActivity : AppCompatActivity() {
                         val id_winner = p["id_winner"]
                         val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
-                        game = Game(id, id_players, null, status, id_winner,theme, difficulty)
+                        val id_owner = p["id_owner"] as String
+                        game = Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner)
                     }
                 }
                 joinTheGame()
@@ -96,16 +92,32 @@ class JoinRoomActivity : AppCompatActivity() {
     }
 
     fun joinTheGame() {
-        if (game != null) {
-            currentUser?.let { user ->
-                game?.let { game ->
-                    game?.id_players?.add(user.id)
-                    currentUser?.id_games?.add(game.id)
-                    database.child("user").child(user.id).child("id_games").setValue(user.id_games)
-                    database.child("game").child(game.id).child("id_players").setValue(game.id_players)
-                    intent= Intent(this, NewRoomActivity::class.java)
-                    startActivity(intent)
+        var join = true
+        game?.id_players?.let{
+            for (id in it){
+                if (id == currentUser.id){
+                    Toast.makeText(this,"You are still in this game, that's non sense ...",Toast.LENGTH_LONG).show()
+                    join = false
                 }
+            }
+        }
+        if(join) {
+            if (game != null) {
+                currentUser?.let { user ->
+                    game?.let { game ->
+                        game?.id_players?.add(user.id)
+                        currentUser?.id_games?.add(game.id)
+                        database.child("user").child(user.id).child("id_games")
+                            .setValue(user.id_games)
+                        database.child("game").child(game.id).child("id_players")
+                            .setValue(game.id_players)
+                        intent = Intent(this, NewRoomActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            }
+            else{
+                Toast.makeText(this,"This game does not exist",Toast.LENGTH_LONG).show()
             }
         }
     }

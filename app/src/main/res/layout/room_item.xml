@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Username"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/profilePic"
         app:layout_constraintTop_toTopOf="@+id/profilePic" />
 
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Level"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/profilePic"
         app:layout_constraintStart_toEndOf="@+id/profilePic" />
 </androidx.constraintlayout.widget.ConstraintLayout>
