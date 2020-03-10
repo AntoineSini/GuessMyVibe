@@ -63,12 +63,12 @@ class ProfileActivity : AppCompatActivity() {
         progressBar.visibility = View.GONE
         userPpImageView.setOnClickListener {
             choosePhotoFromGallary()
-
         }
         usernameTextView.setOnClickListener{
             alertDialog("Nom d'utilisateur")
         }
         displayPP()
+
         findCurrentUser()
         findGamesFromUser()
 
@@ -78,25 +78,21 @@ class ProfileActivity : AppCompatActivity() {
         val input = EditText(this)
         with(builder){
             setTitle(title)
-
-            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
             input.inputType = InputType.TYPE_CLASS_TEXT
             setView(input)
-
-            setPositiveButton("OK",
-                DialogInterface.OnClickListener { dialog, which ->
-                    val m_Text = input.text.toString() })
-
-            setNegativeButton("Cancel",
-                DialogInterface.OnClickListener { dialog, which ->
-                    dialog.cancel() })
+            setPositiveButton("OK"){ _, _ ->
+                database.child("user").child(currentUser.id).child("username").setValue(input.text.toString())
+                findCurrentUser()
+            }
+            setNegativeButton("Cancel"){ dialog, _ ->
+                    dialog.cancel()
+            }
 
             show()
         }
     }
     fun textAdapt(){
         usernameTextView.text = currentUser.username
-
     }
     fun recyclerHandler() {
         lastGamesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -144,21 +140,6 @@ class ProfileActivity : AppCompatActivity() {
         startActivityForResult(galleryIntent, GALLERY)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == GALLERY) {
-                data?.data?.let {
-                    imageUri = it
-                }
-                savePPToStorage()
-            }
-            if (requestCode == CAMERA) {
-
-            }
-        }
-    }
-
     fun findCurrentUser() {
         val users = database.child("user")
         val userListener = object : ValueEventListener {
@@ -189,6 +170,7 @@ class ProfileActivity : AppCompatActivity() {
                         }
                     }
                 }
+                textAdapt()
             }
         }
         users.addValueEventListener(userListener)
@@ -228,5 +210,20 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         games.addValueEventListener(gameListener)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLERY) {
+                data?.data?.let {
+                    imageUri = it
+                }
+                savePPToStorage()
+            }
+            if (requestCode == CAMERA) {
+
+            }
+        }
     }
 }

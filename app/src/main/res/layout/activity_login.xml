@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="casual"
             android:hint="@string/email"
+            android:textColor="@color/greenYellow"
             android:inputType="text|textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -43,6 +44,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="casual"
             android:hint="@string/password"
+            android:textColor="@color/greenYellow"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
