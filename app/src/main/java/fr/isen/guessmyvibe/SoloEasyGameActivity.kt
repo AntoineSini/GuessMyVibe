@@ -28,7 +28,6 @@ class SoloEasyGameActivity : AppCompatActivity() {
     private val REDIRECT_URI = "https://www.google.fr"
     private var mSpotifyAppRemote: SpotifyAppRemote? = null
     private var CONNECTED = 0
-    private var STATE = 0
     private var STEP = 1
     private var CATEGORY : String ? = null
 
@@ -90,7 +89,31 @@ class SoloEasyGameActivity : AppCompatActivity() {
         alert.show()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun showButtonsText(){
+
+        var random = ThreadLocalRandom.current().nextInt(1, 4)
+
+        if(random == 1)
+        {
+            response1.setText(getTrackName())
+        }
+        if(random == 2)
+        {
+            response2.setText(getTrackName())
+        }
+        if(random == 3)
+        {
+            response3.setText(getTrackName())
+        }
+        if(random == 4)
+        {
+            response4.setText(getTrackName())
+        }
+
+
+
+
 
     }
 
@@ -98,7 +121,6 @@ class SoloEasyGameActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun playPlaylist() { // Then we will write some more code here.
         mSpotifyAppRemote?.playerApi?.play(getPlaylist())
-        showButtonsText()
         timer()
     }
 
@@ -208,40 +230,39 @@ class SoloEasyGameActivity : AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun timer() {
+
 
         object : CountDownTimer(11000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
 
                 textView.setText((millisUntilFinished/1000).toString())
                 progressBar.setProgress((millisUntilFinished/1000).toInt() * 10)
-
+                //showButtonsText()
             }
 
             override fun onFinish() {
-                playNextSong()
-                STATE =1
+                if(STEP < 10)
+                {
+                    mSpotifyAppRemote?.playerApi?.skipNext()
+                    getTrackName()
+                    STEP++
+                    idSong.setText("Son " + STEP.toString() + "/10")
+                    timer()
+                }
+                else{
+                    finishGame()
+                }
             }
         }.start()
     }
 
 
-    fun playNextSong(){
-
-        if(STEP < 10)
-        {
-            mSpotifyAppRemote?.playerApi?.skipNext()
-            getTrackName()
-            timer()
-            STEP++
-            idSong.setText("Son " + STEP.toString() + "/10")
-        }
-        else{
-            intent= Intent(this, EndSoloActivity::class.java)
-            startActivity(intent)
-        }
+    fun finishGame(){
+        intent= Intent(this, EndSoloActivity::class.java)
+        startActivity(intent)
     }
-
 
 
 
@@ -251,9 +272,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
         SpotifyAppRemote.disconnect(mSpotifyAppRemote)
     }
 
-    fun pauseSong(){
-        mSpotifyAppRemote?.playerApi?.pause()
-    }
+
 
     fun getTrackName() : String? {
 
