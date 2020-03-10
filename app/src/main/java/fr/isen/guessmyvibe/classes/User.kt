@@ -6,10 +6,12 @@ import java.util.*
 
 @IgnoreExtraProperties
 class User (
-    var id : String?,
+    var id : String,
     var email : String,
     var birthday : String?,
     var username : String?,
-    var age : Int?,
-    var level : Int
+    var age : String?,
+    var level : String,
+    var id_games: ArrayList<String>?
+
 )

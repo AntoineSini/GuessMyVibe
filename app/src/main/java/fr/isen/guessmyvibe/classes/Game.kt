@@ -1,9 +1,16 @@
 package fr.isen.guessmyvibe.classes
 
-val statusList = listOf("Prepared", "Launched", "Finished")
+import com.google.firebase.database.IgnoreExtraProperties
 
-class Game {
-    var players : ArrayList<User>? = null
-    var status : String = statusList[0]
-    var winner : User? = null
-}
+val statusList = listOf("Selection", "Current", "Finished")
+
+@IgnoreExtraProperties
+class Game (
+    var id : String,
+    var id_players : ArrayList<String>,
+    var scores : ArrayList<Score>? = null,
+    var status : String,
+    var id_winner : String? = null,
+    var theme : String,
+    var difficulty : String
+)
