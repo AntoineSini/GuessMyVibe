@@ -1,5 +1,6 @@
 package fr.isen.guessmyvibe
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.google.gson.Gson
 import fr.isen.guessmyvibe.classes.Flags
 import kotlinx.android.synthetic.main.activity_solo_easy.*
 import java.util.concurrent.ThreadLocalRandom
+import kotlin.random.Random.Default.nextInt
 
 
 class SoloEasyGameActivity : AppCompatActivity() {
@@ -22,6 +24,10 @@ class SoloEasyGameActivity : AppCompatActivity() {
 
     var flags: Flags? = null
     var size : Int = 0
+    var response: Int = 0
+    var points: Int = 0
+    var pts : Int = 100
+    var STEP =0
 
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -38,7 +44,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getRandomIndex() : Int{
 
-        return ThreadLocalRandom.current().nextInt(0, size -1 )
+        return nextInt(size)
     }
 
     fun showFlags(code : String?){
@@ -48,14 +54,101 @@ class SoloEasyGameActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun buttonsListener(){
+        response1.setOnClickListener{
+            if(response == 0){
+                points += pts
+            }
+            startGame()
+        }
+        response2.setOnClickListener{
+            if(response == 1){
+                points += pts
+            }
+            startGame()
+
+        }
+        response3.setOnClickListener{
+            if(response == 2){
+                points += pts
+            }
+            startGame()
+
+        }
+        response4.setOnClickListener{
+            if(response == 3){
+                points += pts
+            }
+            else startGame()
+        }
+
+
+    }
+    fun setTextButton(button : Int, text : String?)
+    {
+
+        if(button == 0)
+        {
+            response1.setText(text)
+        }
+        if(button == 1)
+        {
+            response2.setText(text)
+        }
+        if(button == 2)
+        {
+            response3.setText(text)
+        }
+        if(button == 3)
+        {
+            response4.setText(text)
+        }
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun showResponses(country: String?, flags : Flags?){
-        response1.setText(country)
-        var random = getRandomIndex()
-        response3.setText(flags?.results?.get(random)?.country)
-        random = getRandomIndex()
-        response4.setText(flags?.results?.get(random)?.country)
-        random = getRandomIndex()
-        response2.setText(flags?.results?.get(random)?.country)
+        var tabButtons = arrayOf<Int>(0,0,0,0)
+        var cpt=0
+
+        var random = nextInt(4)
+        setTextButton(random, country)
+        tabButtons[random]=2
+        cpt++
+        response = random
+
+        while(cpt<4) {
+            var random = nextInt(4)
+            var randomCountry = nextInt(size)
+
+            while (tabButtons[random] == 0) {
+                setTextButton(random, flags?.results?.get(randomCountry)?.country)
+                tabButtons[random] = 1
+                var random = nextInt(4)
+                cpt++
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun startGame(){
+        STEP++
+        if(STEP <= 10)
+        {
+            var random = getRandomIndex()
+            showFlags(flags?.results?.get(random)?.code)
+            showResponses(flags?.results?.get(random)?.country, flags)
+            buttonsListener()
+        }
+        else{
+            finishGame()
+        }
+    }
+
+    fun finishGame(){
+        intent= Intent(this, EndSoloActivity::class.java)
+        startActivity(intent)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -73,10 +166,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
                 flags = Gson().fromJson(response, Flags::class.java)
                 flags?.results?.size?.let{
                     size=it
-                    var random = getRandomIndex()
-                    showFlags(flags?.results?.get(random)?.code)
-                    showResponses(flags?.results?.get(random)?.country, flags)
-
+                    startGame()
                 }
 
 
