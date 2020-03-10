@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".EndSoloActivity"></activity>
         <activity android:name=".ThemeActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".MultiplayersGameActivity" />
         <activity android:name=".JoinRoomActivity" />
@@ -22,10 +22,9 @@
         <activity android:name=".SoloEasyGameActivity" />
         <activity android:name=".LevelActivity" />
         <activity android:name=".MultiActivity" />
-        <activity android:name=".SpotifyActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
