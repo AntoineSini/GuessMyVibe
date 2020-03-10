@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EndSoloActivity"></activity>
-        <activity android:name=".ThemeActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".EndMultiplayersActivity"></activity>
+        <activity android:name=".EndSoloActivity" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".MultiplayersGameActivity" />
         <activity android:name=".JoinRoomActivity" />
@@ -24,7 +24,7 @@
         <activity android:name=".MultiActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".HomeActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

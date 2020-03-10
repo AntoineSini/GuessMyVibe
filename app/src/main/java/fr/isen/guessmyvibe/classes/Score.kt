@@ -8,4 +8,3 @@ class Score(
     var id_game: String,
     var score: Int?
 )
-

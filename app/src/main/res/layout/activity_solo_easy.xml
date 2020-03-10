@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/greenBackground"
     tools:context=".SoloEasyGameActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        
 
     <TextView
         android:id="@+id/country"
@@ -98,16 +105,18 @@
         app:layout_constraintStart_toEndOf="@+id/response3"
         app:layout_constraintTop_toBottomOf="@+id/response2" />
 
-    <ImageView
-        android:id="@+id/flagView"
-        android:layout_width="182dp"
-        android:layout_height="189dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/flagView"
+                android:layout_width="182dp"
+                android:layout_height="189dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <Chronometer
         android:id="@+id/chronoView"
