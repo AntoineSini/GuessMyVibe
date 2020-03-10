@@ -1,6 +1,6 @@
 package fr.isen.guessmyvibe.classes
 
 class FlagModel (
-    code : String?,
-    country : String?
+    val code : String,
+    val country : String
 )
