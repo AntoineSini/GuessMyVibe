@@ -5,6 +5,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.widget.Chronometer
+import android.widget.Chronometer.OnChronometerTickListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -134,11 +136,27 @@ class SoloEasyGameActivity : AppCompatActivity() {
 
         if(STEP <= 10)
         {
-            if(STEP == 1 ) chronoView.start()
-            else{
+
+            if(STEP == 1){
+                chronoView.start()
                 val systemCurrTime = SystemClock.elapsedRealtime()
                 chronoView.setBase(systemCurrTime)
             }
+
+            chronoView.setOnChronometerTickListener(object : OnChronometerTickListener {
+                var counter = 9
+                override fun onChronometerTick(chronometer: Chronometer) {
+
+                    chronoView.setText(counter.toString() + "")
+                    progressBar.setProgress(counter * 10)
+
+                    counter--
+
+                    if (counter < 0) {
+                        startGame()
+                    }
+                }
+            })
 
             var random = getRandomIndex()
             showFlags(flags?.results?.get(random)?.code)
