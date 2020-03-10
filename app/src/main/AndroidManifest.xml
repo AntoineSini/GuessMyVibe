@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.isen.guessmyvibe">
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/guessmyvibe"
@@ -9,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".EndSoloActivity"></activity>
+        <activity android:name=".ThemeActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".MultiplayersGameActivity" />
         <activity android:name=".JoinRoomActivity" />
         <activity android:name=".NewRoomActivity" />
@@ -17,10 +22,9 @@
         <activity android:name=".SoloEasyGameActivity" />
         <activity android:name=".LevelActivity" />
         <activity android:name=".MultiActivity" />
-        <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".RegisterActivity"></activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

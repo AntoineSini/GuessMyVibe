@@ -1,14 +1,14 @@
 package fr.isen.guessmyvibe
 
-import android.app.Activity
 import android.content.Intent
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 
 class HomeActivity : AppCompatActivity() {
+
+    private var INSTALL = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,10 +16,11 @@ class HomeActivity : AppCompatActivity() {
         buttonsListener()
     }
 
+
     fun buttonsListener()
     {
         soloButton.setOnClickListener{
-            intent= Intent(this, LevelActivity::class.java)
+            intent= Intent(this, SoloEasyGameActivity::class.java)
             startActivity(intent)
 
 
