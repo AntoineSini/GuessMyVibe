@@ -222,7 +222,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
             if (random == 2) playlist = "spotify:playlist:37i9dQZF1DXd0Y4aXXQXWv" // essentiel de la variete francaise
             if (random == 3) playlist = "spotify:playlist:6OKnBuHwgm4EJmxS8QbFC2" // variete francaise 2000-2019
             if (random == 4) playlist = "spotify:playlist:16e8q5FYKDsDXThuhN1S6m" // varietes francaises
-            if (random == 5) playlist = "spotify:playlist:78ZTUJ2PKfs34LAMa8Qcsm" // veietes francaises 60 - 2000
+            if (random == 5) playlist = "spotify:playlist:78ZTUJ2PKfs34LAMa8Qcsm" // varietes francaises 60 - 2000
         }
 
         return playlist
