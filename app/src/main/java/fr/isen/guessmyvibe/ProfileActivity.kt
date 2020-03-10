@@ -92,7 +92,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
     fun textAdapt(){
-        usernameTextView.text = currentUser.username
+        if (currentUser.username != null) {
+            usernameTextView.text = currentUser.username
+        }
     }
     fun recyclerHandler() {
         lastGamesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -153,21 +155,14 @@ class ProfileActivity : AppCompatActivity() {
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
                     if (p["id"] == auth.currentUser?.uid) {
-                        val id = p["id"]
-                        val email = p["email"]
+                        val id = p["id"] as String
+                        val email = p["email"] as String
                         val birthday = p["birthday"]
                         val username = p["username"]
                         val age = p["age"]
-                        val level = p["level"]
+                        val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        id?.let { id ->
-                            email?.let { email ->
-                                level?.let { level ->
-                                    currentUser =
-                                        User(id, email, birthday, username, age, level, id_games)
-                                }
-                            }
-                        }
+                        currentUser = User(id, email, birthday, username, age, level, id_games)
                     }
                 }
                 textAdapt()
@@ -189,7 +184,7 @@ class ProfileActivity : AppCompatActivity() {
                 val arrayGames = ArrayList<Game>()
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
-                    currentUser?.id_games?.let{
+                    currentUser.id_games?.let{
                         for(id in it){
                             if(p["id"] == id){
                                 val id = p["id"] as String
@@ -199,7 +194,8 @@ class ProfileActivity : AppCompatActivity() {
                                 val id_winner = p["id_winner"]
                                 val theme = p["theme"] as String
                                 val difficulty = p["difficulty"] as String
-                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty))
+                                val id_owner = p["id_owner"] as String
+                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty,id_owner))
                             }
                         }
                     }

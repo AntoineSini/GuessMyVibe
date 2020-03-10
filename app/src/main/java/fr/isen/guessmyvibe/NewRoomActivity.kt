@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -19,8 +20,8 @@ class NewRoomActivity : AppCompatActivity() {
     lateinit var database: DatabaseReference
     lateinit var storage : FirebaseStorage
     lateinit var userArray : ArrayList<User>
-    var currentUser : User? = null
-    var currentGame : Game? = null
+    lateinit var currentUser : User
+    lateinit var currentGame : Game
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,10 @@ class NewRoomActivity : AppCompatActivity() {
             startActivity(intent)
         }
         findCurrentUser()
-        //findCurrentGame()
-        //findUserArray()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        Toast.makeText(this,"Boom", Toast.LENGTH_SHORT).show()
     }
 
     fun findCurrentUser() {
@@ -53,20 +56,14 @@ class NewRoomActivity : AppCompatActivity() {
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
                     if (p["id"] == auth.currentUser?.uid) {
-                        val id = p["id"]
-                        val email = p["email"]
+                        val id = p["id"] as String
+                        val email = p["email"] as String
                         val birthday = p["birthday"]
                         val username = p["username"]
                         val age = p["age"]
-                        val level = p["level"]
+                        val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        id?.let { id ->
-                            email?.let { email ->
-                                level?.let { level ->
-                                    currentUser = User(id, email, birthday, username, age, level, id_games)
-                                }
-                            }
-                        }
+                        currentUser = User(id, email, birthday, username, age, level, id_games)
                     }
                 }
                 findCurrentGame()
@@ -85,7 +82,7 @@ class NewRoomActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                var lastGame = currentUser?.id_games?.last()
+                var lastGame = currentUser.id_games?.last()
 
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
@@ -97,7 +94,8 @@ class NewRoomActivity : AppCompatActivity() {
                         val id_winner = p["id_winner"]
                         val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
-                        currentGame= Game(id, id_players, null, status, id_winner,theme, difficulty)
+                        val id_owner = p["id_owner"] as String
+                        currentGame= Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner)
                     }
                 }
                 findUserArray()
@@ -115,29 +113,19 @@ class NewRoomActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                var userIds = ArrayList<String>()
-                currentGame?.id_players?.let{
-                    userIds = it
-                }
                 var arrayUser = ArrayList<User>()
-                for (iduser in userIds) {
+                for (iduser in currentGame.id_players) {
                     for (postSnapshot in p0.children) {
                         val p = postSnapshot.value as HashMap<String, String>
                         if (p["id"] == iduser) {
-                            val id = p["id"]
-                            val email = p["email"]
+                            val id = p["id"] as String
+                            val email = p["email"] as String
                             val birthday = p["birthday"]
                             val username = p["username"]
                             val age = p["age"]
-                            val level = p["level"]
+                            val level = p["level"] as String
                             val id_games = p["id_games"] as ArrayList<String>?
-                            id?.let { id ->
-                                email?.let { email ->
-                                    level?.let { level ->
-                                        arrayUser.add(User(id, email, birthday, username, age, level, id_games))
-                                    }
-                                }
-                            }
+                            arrayUser.add(User(id, email, birthday, username, age, level, id_games))
                         }
                     }
                 }

@@ -13,11 +13,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val url = "http://www.hochmuth.com/mp3/Haydn_Cello_Concerto_D-1.mp3"
-        val mediaPlayer: MediaPlayer? = MediaPlayer()
-        mediaPlayer?.setDataSource(url)
-        //mediaPlayer?.prepare()
-        //mediaPlayer?.start()
         buttonsListener()
     }
 
