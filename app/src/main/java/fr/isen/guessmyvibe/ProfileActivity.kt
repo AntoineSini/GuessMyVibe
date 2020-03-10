@@ -20,6 +20,16 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.isen.guessmyvibe.classes.Game
 import fr.isen.guessmyvibe.classes.Score
+import android.R.string.cancel
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.text.InputType
+import android.widget.EditText
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -55,12 +65,39 @@ class ProfileActivity : AppCompatActivity() {
             choosePhotoFromGallary()
 
         }
+        usernameTextView.setOnClickListener{
+            alertDialog("Nom d'utilisateur")
+        }
         displayPP()
         findCurrentUser()
         findGamesFromUser()
 
     }
+    fun alertDialog(title : String){
+        val builder = AlertDialog.Builder(this)
+        val input = EditText(this)
+        with(builder){
+            setTitle(title)
 
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            setView(input)
+
+            setPositiveButton("OK",
+                DialogInterface.OnClickListener { dialog, which ->
+                    val m_Text = input.text.toString() })
+
+            setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.cancel() })
+
+            show()
+        }
+    }
+    fun textAdapt(){
+        usernameTextView.text = currentUser.username
+
+    }
     fun recyclerHandler() {
         lastGamesRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val adapter = RecyclerAdapterProfile(content = arrayGamesOfUser)
