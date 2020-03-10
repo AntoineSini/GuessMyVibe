@@ -36,12 +36,11 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var database: DatabaseReference
     lateinit var storage: FirebaseStorage
-    lateinit var currentUser: User
     lateinit var arrayGamesOfUser: ArrayList<Game>
+    var currentUser: User? = null
     var imageUri: Uri? = null
     val GALLERY = 1
     val CAMERA = 2
-    private val spinner: ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +80,9 @@ class ProfileActivity : AppCompatActivity() {
             input.inputType = InputType.TYPE_CLASS_TEXT
             setView(input)
             setPositiveButton("OK"){ _, _ ->
-                database.child("user").child(currentUser.id).child("username").setValue(input.text.toString())
+                currentUser?.id?.let {
+                    database.child("user").child(it).child("username").setValue(input.text.toString())
+                }
                 findCurrentUser()
             }
             setNegativeButton("Cancel"){ dialog, _ ->
@@ -92,8 +93,9 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
     fun textAdapt(){
-        if (currentUser.username != null) {
-            usernameTextView.text = currentUser.username
+        if (currentUser?.username != null) {
+            val string = currentUser?.username
+            usernameTextView.text = string
         }
     }
     fun recyclerHandler() {
@@ -157,12 +159,10 @@ class ProfileActivity : AppCompatActivity() {
                     if (p["id"] == auth.currentUser?.uid) {
                         val id = p["id"] as String
                         val email = p["email"] as String
-                        val birthday = p["birthday"]
                         val username = p["username"]
-                        val age = p["age"]
                         val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        currentUser = User(id, email, birthday, username, age, level, id_games)
+                        currentUser = User(id, email, username, level, id_games)
                     }
                 }
                 textAdapt()
@@ -184,7 +184,7 @@ class ProfileActivity : AppCompatActivity() {
                 val arrayGames = ArrayList<Game>()
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
-                    currentUser.id_games?.let{
+                    currentUser?.id_games?.let{
                         for(id in it){
                             if(p["id"] == id){
                                 val id = p["id"] as String
@@ -195,7 +195,8 @@ class ProfileActivity : AppCompatActivity() {
                                 val theme = p["theme"] as String
                                 val difficulty = p["difficulty"] as String
                                 val id_owner = p["id_owner"] as String
-                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty,id_owner))
+                                val finished = p["finished"] as String
+                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished))
                             }
                         }
                     }

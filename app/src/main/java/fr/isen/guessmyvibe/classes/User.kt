@@ -8,9 +8,7 @@ import java.util.*
 class User (
     var id : String,
     var email : String,
-    var birthday : String?,
     var username : String?,
-    var age : String?,
     var level : String,
     var id_games: ArrayList<String>?
 

@@ -10,6 +10,7 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import fr.isen.guessmyvibe.classes.Game
 import fr.isen.guessmyvibe.classes.User
+import fr.isen.guessmyvibe.classes.statusList
 import kotlinx.android.synthetic.main.activity_join_room.*
 
 
@@ -17,7 +18,7 @@ class JoinRoomActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var database: DatabaseReference
     lateinit var storage : FirebaseStorage
-    lateinit var currentUser : User
+    var currentUser : User? = null
     var game : Game? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +50,10 @@ class JoinRoomActivity : AppCompatActivity() {
                     if (p["id"] == auth.currentUser?.uid) {
                         val id = p["id"] as String
                         val email = p["email"] as String
-                        val birthday = p["birthday"]
                         val username = p["username"]
-                        val age = p["age"]
                         val level = p["level"] as String
                         val id_games = p["id_games"] as ArrayList<String>?
-                        currentUser = User(id, email, birthday, username, age, level, id_games)
+                        currentUser = User(id, email, username, level, id_games)
                     }
                 }
             }
@@ -83,7 +82,8 @@ class JoinRoomActivity : AppCompatActivity() {
                         val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
                         val id_owner = p["id_owner"] as String
-                        game = Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner)
+                        val finished = p["finished"] as String
+                        game = Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished)
                     }
                 }
                 joinTheGame()
@@ -95,14 +95,15 @@ class JoinRoomActivity : AppCompatActivity() {
         var join = true
         game?.id_players?.let{
             for (id in it){
-                if (id == currentUser.id){
-                    Toast.makeText(this,"You are still in this game, that's non sense ...",Toast.LENGTH_LONG).show()
+                if (id == currentUser?.id){
+                    Toast.makeText(this,"You are still in this game, that's nonsense ...",Toast.LENGTH_LONG).show()
                     join = false
                 }
             }
         }
         if(join) {
-            if (game != null) {
+            val status = game?.status
+            if (game != null && status == statusList[0]) {
                 currentUser?.let { user ->
                     game?.let { game ->
                         game?.id_players?.add(user.id)

@@ -13,5 +13,6 @@ class Game (
     var id_winner : String? = null,
     var theme : String,
     var difficulty : String,
-    var id_owner: String
+    var id_owner: String,
+    var finished : String
 )
