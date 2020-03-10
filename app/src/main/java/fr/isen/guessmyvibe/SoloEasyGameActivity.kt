@@ -43,13 +43,19 @@ class SoloEasyGameActivity : AppCompatActivity() {
 
     fun showFlags(code : String?){
 
-        var path = "fr.isen.guessmyvibe:drawable/" + code
-        var id = resources.getIdentifier(code, "drawable", this.packageName)
+        var id = resources.getIdentifier(code?.toLowerCase(), "drawable", "fr.isen.guessmyvibe")
         flagView.setImageResource(id)
-        Toast.makeText(this, path + "," + id.toString(), Toast.LENGTH_LONG).show()
+    }
 
-
-
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun showResponses(country: String?, flags : Flags?){
+        response1.setText(country)
+        var random = getRandomIndex()
+        response3.setText(flags?.results?.get(random)?.country)
+        random = getRandomIndex()
+        response4.setText(flags?.results?.get(random)?.country)
+        random = getRandomIndex()
+        response2.setText(flags?.results?.get(random)?.country)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -69,6 +75,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
                     size=it
                     var random = getRandomIndex()
                     showFlags(flags?.results?.get(random)?.code)
+                    showResponses(flags?.results?.get(random)?.country, flags)
 
                 }
 

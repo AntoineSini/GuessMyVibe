@@ -7,7 +7,7 @@
     tools:context=".SpotifyActivity">
 
     <TextView
-        android:id="@+id/idSong"
+        android:id="@+id/country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -36,9 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="TIMER"
-        app:layout_constraintEnd_toEndOf="@+id/idSong"
-        app:layout_constraintStart_toStartOf="@+id/idSong"
-        app:layout_constraintTop_toBottomOf="@+id/idSong" />
+        app:layout_constraintEnd_toEndOf="@+id/country"
+        app:layout_constraintStart_toStartOf="@+id/country"
+        app:layout_constraintTop_toBottomOf="@+id/country" />
 
     <ImageButton
         android:id="@+id/songButton"
