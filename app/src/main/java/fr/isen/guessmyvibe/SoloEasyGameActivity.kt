@@ -1,8 +1,10 @@
 package fr.isen.guessmyvibe
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -10,7 +12,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import fr.isen.guessmyvibe.classes.FlagModel
 import fr.isen.guessmyvibe.classes.Flags
 import kotlinx.android.synthetic.main.activity_solo_easy.*
 import java.util.concurrent.ThreadLocalRandom
@@ -23,41 +24,39 @@ class SoloEasyGameActivity : AppCompatActivity() {
     var size : Int = 0
 
 
-    //@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solo_easy)
         requestRandomFlag()
-
         //var random = getRandomIndex()
 
 
     }
 
 
-    /*@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getRandomIndex() : Int{
 
         return ThreadLocalRandom.current().nextInt(0, size -1 )
     }
 
-    fun showFlags(index : Int){
-        lateinit var drapeau : FlagModel
+    fun showFlags(code : String?){
 
-        flags.results?.get(index)?.let{
-            drapeau = it
-        }
-
-        var path = "R.drawable." + drapeau.code
-        //flagView.setImageResource(path.toInt())
+        var path = "fr.isen.guessmyvibe:drawable/" + code
+        var id = resources.getIdentifier(code, "drawable", this.packageName)
+        flagView.setImageResource(id)
+        Toast.makeText(this, path + "," + id.toString(), Toast.LENGTH_LONG).show()
 
 
-    }*/
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun requestRandomFlag(){
 
         val queue = Volley.newRequestQueue(this)
-        val url = "https://puu.sh/Fj69u/d36bc26914.json"
+        val url = "https://puu.sh/Fj7ZY/4bb0455f21.json"
 
         val stringRequest = StringRequest(
             Request.Method.GET, url,
@@ -68,8 +67,11 @@ class SoloEasyGameActivity : AppCompatActivity() {
                 flags = Gson().fromJson(response, Flags::class.java)
                 flags?.results?.size?.let{
                     size=it
+                    var random = getRandomIndex()
+                    showFlags(flags?.results?.get(random)?.code)
+
                 }
-                var random=
+
 
             },
             Response.ErrorListener {
