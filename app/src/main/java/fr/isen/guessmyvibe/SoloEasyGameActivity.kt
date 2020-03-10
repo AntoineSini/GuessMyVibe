@@ -1,11 +1,10 @@
 package fr.isen.guessmyvibe
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
@@ -15,7 +14,6 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import fr.isen.guessmyvibe.classes.Flags
 import kotlinx.android.synthetic.main.activity_solo_easy.*
-import java.util.concurrent.ThreadLocalRandom
 import kotlin.random.Random.Default.nextInt
 
 
@@ -28,7 +26,6 @@ class SoloEasyGameActivity : AppCompatActivity() {
     var points: Int = 0
     var pts : Int = 100
     var STEP =0
-
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +76,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
             if(response == 3){
                 points += pts
             }
-            else startGame()
+            startGame()
         }
 
 
@@ -134,8 +131,15 @@ class SoloEasyGameActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun startGame(){
         STEP++
+
         if(STEP <= 10)
         {
+            if(STEP == 1 ) chronoView.start()
+            else{
+                val systemCurrTime = SystemClock.elapsedRealtime()
+                chronoView.setBase(systemCurrTime)
+            }
+
             var random = getRandomIndex()
             showFlags(flags?.results?.get(random)?.code)
             showResponses(flags?.results?.get(random)?.country, flags)
