@@ -69,7 +69,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
                 flags?.results?.size?.let{
                     size=it
                 }
-                var random=
+             
 
             },
             Response.ErrorListener {
