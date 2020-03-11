@@ -149,8 +149,11 @@ class JoinRoomActivity : AppCompatActivity() {
                     }
                 }
             }
-            else{
-                Toast.makeText(this,"This game does not exist",Toast.LENGTH_LONG).show()
+            else if (status == statusList[2]){
+                Toast.makeText(this,"This gameis finished !",Toast.LENGTH_LONG).show()
+            }
+            else {
+                Toast.makeText(this, "This game does not exist :(",Toast.LENGTH_LONG).show()
             }
         }
     }

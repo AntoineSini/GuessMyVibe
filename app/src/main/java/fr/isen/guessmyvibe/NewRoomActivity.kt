@@ -104,7 +104,7 @@ class NewRoomActivity : AppCompatActivity() {
                 }
             }
         }
-        games.addValueEventListener(gameListener)
+        games.addListenerForSingleValueEvent(gameListener)
     }
     fun findCurrentUser() {
         val users = database.child("user")
