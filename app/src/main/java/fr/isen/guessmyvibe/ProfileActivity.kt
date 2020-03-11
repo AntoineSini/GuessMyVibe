@@ -190,17 +190,15 @@ class ProfileActivity : AppCompatActivity() {
                         for(id in it){
                             if(p["id"] == id){
                                 val id = p["id"] as String
+                                val scoreslist = ArrayList<Score>()
                                 val id_players = p["id_players"] as ArrayList<String>
-                                //val scores = p["scores"] as HashMap<String, String>
                                 val scores = p["scores"] as HashMap<String, String>
                                 val currentScore = scores[currentUser?.id] as HashMap<String, String>
-                                val score : Score? = null
-                                score?.score = currentScore["score"] as String
-                                score?.id_game = currentScore["id_game"] as String
-                                score?.id_player = currentScore["id_player"] as String
-                                val scoreslist : ArrayList<Score> ?= null
-                                score?.let{
-                                    scoreslist?.add(it)
+                                currentScore["id_player"]?.let{player ->
+                                    currentScore["id_game"]?.let{game ->
+                                        val score = Score(player, game, currentScore["score"])
+                                        scoreslist.add(score)
+                                    }
                                 }
                                 val status = p["status"] as String
                                 val id_winner = p["id_winner"]
