@@ -122,7 +122,7 @@ class EndSoloActivity : AppCompatActivity() {
                         pointsTextView.setText("Vous avez marqué " + playerScore + " points!")
                         var newLevel : Float = 0f
                         currentUser?.level?.let{
-                            newLevel = it.toFloat() + playerScore.toFloat()
+                            newLevel = it.toFloat() + (playerScore.toFloat()/1000)
                         }
                         currentUser?.id?.let {
                             database.child("user").child(it).child("level").setValue(newLevel.toString())
