@@ -47,9 +47,12 @@ class MultiplayersGameActivity : AppCompatActivity() {
 
     /// ANTOINE ////
     fun finishTheGame(){
-        val size = currentGame?.id_players?.size?.toString()
+
+        val size = currentGame?.id_players?.size
+        val finishedCpt = currentGame?.finished?.toInt() as Int
         if(currentGame != null) {
-            if (currentGame?.finished == size) {
+
+            if (finishedCpt+1 == size) {
                 currentGame?.status = statusList[2]
                 currentGame?.id?.let {
                     database.child("game").child(it).child("status").setValue(currentGame?.status)
@@ -103,18 +106,84 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     if (p["id"] == lastGame) {
                         val id = p["id"] as String
                         val id_players = p["id_players"] as ArrayList<String>
-                        val scores = p["scores"] as ArrayList<Score>
+                        //val scores = p["scores"] as ArrayList<Score>
                         val status = p["status"] as String
                         val id_winner = p["id_winner"]
                         val difficulty = p["difficulty"] as String
                         val id_owner = p["id_owner"] as String
                         val finished = p["finished"] as String
-                        currentGame = Game(id,id_players,scores,status,id_winner,difficulty,id_owner, finished)
+                        currentGame = Game(id,id_players,null,status,id_winner,difficulty,id_owner, finished)
                     }
                 }
             }
         }
-        setPoints()
+        //setPoints()
+        games.addListenerForSingleValueEvent(gameListener)
+    }
+
+    fun finishgamerequest() {
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var lastGame = currentUser?.id_games?.last()
+
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == lastGame) {
+                        val id = p["id"] as String
+                        val id_players = p["id_players"] as ArrayList<String>
+                        //val scores = p["scores"] as ArrayList<Score>
+                        val status = p["status"] as String
+                        val id_winner = p["id_winner"]
+                        val difficulty = p["difficulty"] as String
+                        val id_owner = p["id_owner"] as String
+                        val finished = p["finished"] as String
+                        currentGame = Game(id,id_players,null,status,id_winner,difficulty,id_owner, finished)
+                    }
+                }
+                finishGame()
+            }
+        }
+        //setPoints()
+        games.addListenerForSingleValueEvent(gameListener)
+    }
+
+    fun finishthegamerequest() {
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var lastGame = currentUser?.id_games?.last()
+
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == lastGame) {
+                        val id = p["id"] as String
+                        val id_players = p["id_players"] as ArrayList<String>
+                        //val scores = p["scores"] as ArrayList<Score>
+                        val status = p["status"] as String
+                        val id_winner = p["id_winner"]
+                        val difficulty = p["difficulty"] as String
+                        val id_owner = p["id_owner"] as String
+                        val finished = p["finished"] as String
+                        currentGame = Game(id,id_players,null,status,id_winner,difficulty,id_owner, finished)
+                    }
+                }
+                finishTheGame()
+            }
+        }
+        //setPoints()
         games.addListenerForSingleValueEvent(gameListener)
     }
 
@@ -245,17 +314,20 @@ class MultiplayersGameActivity : AppCompatActivity() {
         }
         else{
             setPoints()
-            finishGame()
-            finishTheGame()
+            finishgamerequest()
+            finishthegamerequest()
         }
     }
 
     fun setPoints() {
-        currentGame?.id?.let{
+        currentGame?.id?.let{game ->
+            currentUser?.id?.let{id ->
 
-            database.child("game").child(it).child("scores").child("id_player").setValue(currentUser?.id)
-            database.child("game").child(it).child("scores").child("id_game").setValue(it)
-            database.child("game").child(it).child("scores").child("score").setValue(points.toString())
+                database.child("game").child(game).child("scores").child(id).child("id_player").setValue(id)
+                database.child("game").child(game).child("scores").child(id).child("id_game").setValue(game)
+                database.child("game").child(game).child("scores").child(id).child("score").setValue(points.toString())
+
+            }
         }
    }
 

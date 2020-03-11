@@ -104,9 +104,6 @@ class MultiActivity : AppCompatActivity() {
         }
         val key = database.child("game").push().key ?: ""
         val arrayScore = ArrayList<Score>()
-        arrayScore.add(Score("123","1234","42"))
-        arrayScore.add(Score("321","4321","24"))
-        arrayScore.add(Score("666","6666","66"))
         val newGame = Game(key, arraySingleUser, arrayScore,statusList[0],null,"Multiplayer",currentUser?.id as String,"0")
         database.child("game").child(key).setValue(newGame)
 
