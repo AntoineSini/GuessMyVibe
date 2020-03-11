@@ -270,8 +270,8 @@ class MultiplayersGameActivity : AppCompatActivity() {
             database.child("game").child(it).child("finished").setValue(finishedString)
         }
         findCurrentUser()
-        intent= Intent(this, EndSoloActivity::class.java)
-        startActivity(intent)
+        /*intent= Intent(this, EndSoloActivity::class.java)
+        startActivity(intent)*/
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
