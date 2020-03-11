@@ -124,7 +124,7 @@ class EndSoloActivity : AppCompatActivity() {
                 }
                         currentGame?.id?.let{
                         database.child("game").child(it).child("id_winner").setValue(winnername)
-                    
+
                 }
             }
         })
