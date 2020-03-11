@@ -13,30 +13,128 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.firebase.auth.FirebaseAuth
+<<<<<<< HEAD
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import fr.isen.guessmyvibe.classes.Flags
+import fr.isen.guessmyvibe.classes.User
+import fr.isen.guessmyvibe.classes.statusList
+=======
+import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
+import fr.isen.guessmyvibe.classes.Flags
+import fr.isen.guessmyvibe.classes.Game
+import fr.isen.guessmyvibe.classes.User
+>>>>>>> master
 import kotlinx.android.synthetic.main.activity_solo_easy.*
 import kotlin.random.Random.Default.nextInt
 
 
 class SoloEasyGameActivity : AppCompatActivity() {
 
+    lateinit var auth: FirebaseAuth
+    lateinit var database: DatabaseReference
+    lateinit var storage : FirebaseStorage
+<<<<<<< HEAD
+    var currentUser : User? = null
+=======
+    lateinit var userArray : ArrayList<User>
+    var currentUser : User? = null
+    var currentGame : Game? = null
+>>>>>>> master
 
     var flags: Flags? = null
     var size : Int = 0
     var response: Int = 0
     var points: Int = 0
-    var pts : Int = 100
+    var pts : Int = null
     var STEP =0
+
+
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solo_easy)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
+        storage = FirebaseStorage.getInstance()
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
         requestRandomFlag()
 
     }
+    fun findCurrentUser() {
+        val users = database.child("user")
+        val userListener = object : ValueEventListener {
 
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == auth.currentUser?.uid) {
+                        val id = p["id"] as String
+                        val email = p["email"] as String
+                        val username = p["username"]
+                        val level = p["level"] as String
+                        val id_games = p["id_games"] as ArrayList<String>?
+                        currentUser = User(id, email, username, level, id_games)
+                    }
+                }
+                textAdapt()
+            }
+        }
+        users.addValueEventListener(userListener)
+    }
+    fun findGamesFromUser() {
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val arrayGames = ArrayList<Game>()
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    currentUser?.id_games?.let{
+                        for(id in it){
+                            if(p["id"] == id){
+                                val id = p["id"] as String
+                                val id_players = p["id_players"] as ArrayList<String>
+                                //val scores = p["scores"] as ArrayList<>
+                                val status = p["status"] as String
+                                val id_winner = p["id_winner"]
+                                val theme = p["theme"] as String
+                                val difficulty = p["difficulty"] as String
+                                val id_owner = p["id_owner"] as String
+                                val finished = p["finished"] as String
+                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished))
+                            }
+                        }
+                    }
+                }
+                arrayGamesOfUser = arrayGames
+                recyclerHandler()
+            }
+        }
+
+        games.addValueEventListener(gameListener)
+    }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun getRandomIndex() : Int{
@@ -149,8 +247,10 @@ class SoloEasyGameActivity : AppCompatActivity() {
                     progressBar.setProgress(counter * 10)
 
                     counter--
+                    pts = counter*10
 
                     if (counter < 0) {
+                        counter=0
                         startGame()
                     }
                 }
@@ -166,7 +266,32 @@ class SoloEasyGameActivity : AppCompatActivity() {
         }
     }
 
+    fun setPoints() {
+        currentGame?.id?.let{
+
+        database.child("game").child(it).child("score").child("id_player").setValue(currentUser?.id)
+        database.child("game").child(it).child("score").child("id_game").setValue(it)
+        database.child("game").child(it).child("score").child("score").setValue(points.toString())
+        }
+
+    }
+
     fun finishGame(){
+<<<<<<< HEAD
+        var finished : Int = currentGame?.finished?.toInt() as Int
+        finished++
+        val finishedString = finished.toString()
+        currentGame?.id?.let{
+            database.child("game").child(it).child("finished").setValue(finishedString)
+        }
+        currentGame?.status = statusList[2]
+        currentGame?.id?.let {
+            database.child("game").child(it).child("status").setValue(currentGame?.status)
+        }
+=======
+
+        setPoints()
+>>>>>>> master
         intent= Intent(this, EndSoloActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

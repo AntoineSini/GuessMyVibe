@@ -231,7 +231,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     counter--
 
                     if (counter < 0) {
-                        counter = 0
+                        counter=0
                         startGame()
                     }
                 }
@@ -248,7 +248,17 @@ class MultiplayersGameActivity : AppCompatActivity() {
         }
     }
 
+    fun setPoints() {
+        currentGame?.id?.let{
+
+            database.child("game").child(it).child("score").child("id_player").setValue(currentUser?.id)
+            database.child("game").child(it).child("score").child("id_game").setValue(it)
+            database.child("game").child(it).child("score").child("score").setValue(points.toString())
+        }
+   }
+
     fun finishGame(){
+        setPoints()
         var finished : Int = currentGame?.finished?.toInt() as Int
         finished++
         val finishedString = finished.toString()
