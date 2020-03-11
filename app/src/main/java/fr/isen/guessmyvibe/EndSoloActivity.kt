@@ -3,20 +3,37 @@ package fr.isen.guessmyvibe
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import fr.isen.guessmyvibe.classes.Game
+import fr.isen.guessmyvibe.classes.Score
+import fr.isen.guessmyvibe.classes.User
 
 import kotlinx.android.synthetic.main.activity_end_solo.*
 
 
 class EndSoloActivity : AppCompatActivity() {
 
-    private var POINTS = 100
+
+    lateinit var auth: FirebaseAuth
+    lateinit var database: DatabaseReference
+    lateinit var storage : FirebaseStorage
+    var currentUser : User? = null
+    var currentGame : Game? = null
+    private var SCORE = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_end_solo)
-
-        showPoints()
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
+        storage = FirebaseStorage.getInstance()
+        findCurrentUser()
+        findCurrentGame()
 
         replayButton.setOnClickListener{
             intent= Intent(this, HomeActivity::class.java)
@@ -25,7 +42,90 @@ class EndSoloActivity : AppCompatActivity() {
         }
     }
 
+    fun findCurrentUser() {
+        val users = database.child("user")
+        val userListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == auth.currentUser?.uid) {
+                        val id = p["id"] as String
+                        val email = p["email"] as String
+                        val username = p["username"]
+                        val level = p["level"] as String
+                        val id_games = p["id_games"] as ArrayList<String>?
+                        currentUser = User(id, email, username, level, id_games)
+                    }
+                }
+                findCurrentGame()
+            }
+        }
+        users.addListenerForSingleValueEvent(userListener)
+    }
+
+    fun findCurrentGame(){
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                var lastGame = currentUser?.id_games?.last()
+
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == lastGame) {
+                        val id = p["id"] as String
+                        val id_players = p["id_players"] as ArrayList<String>
+                        //val scores = p["scores"] as ArrayList<>
+                        val status = p["status"] as String
+                        val id_winner = p["id_winner"]
+                        val difficulty = p["difficulty"] as String
+                        val id_owner = p["id_owner"] as String
+                        val finished = p["finished"] as String
+                        currentGame= Game(id, id_players, null, status, id_winner, difficulty, id_owner, finished)
+                    }
+                }
+                showPoints()
+            }
+        }
+        games.addListenerForSingleValueEvent(gameListener)
+    }
+
     fun showPoints(){
-        pointsTextView.setText(POINTS.toString() + " POINTS !")
+
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == currentGame?.id) {
+                        val scores = p["scores"] as HashMap<String, String>
+                        val currentScore = scores[currentUser?.id] as HashMap<String, String>
+                        val playerScore = currentScore["score"] as String
+                        pointsTextView.setText("Vous avez marqué " + playerScore + " points!")
+                    }
+                }
+            }
+        }
+        games.addListenerForSingleValueEvent(gameListener)
+
+
     }
 }

@@ -247,11 +247,13 @@ class SoloEasyGameActivity : AppCompatActivity() {
     }
 
     fun setPoints() {
-        currentGame?.id?.let{
+        currentGame?.id?.let{idGame ->
+            currentUser?.id?.let{idUser ->
+                database.child("game").child(idGame).child("scores").child(idUser).child("id_player").setValue(idUser)
+                database.child("game").child(idGame).child("scores").child(idUser).child("id_game").setValue(idGame)
+                database.child("game").child(idGame).child("scores").child(idUser).child("score").setValue(points.toString())
+            }
 
-        database.child("game").child(it).child("score").child("id_player").setValue(currentUser?.id)
-        database.child("game").child(it).child("score").child("id_game").setValue(it)
-        database.child("game").child(it).child("score").child("score").setValue(points.toString())
         }
 
     }
