@@ -54,11 +54,11 @@ class MultiplayersGameActivity : AppCompatActivity() {
                 currentGame?.id?.let {
                     database.child("game").child(it).child("status").setValue(currentGame?.status)
                 }
-                intent = Intent(this, EndSoloActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
             }
         }
+        intent = Intent(this, EndSoloActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
     fun findCurrentUser() {
         val users = database.child("user")
@@ -112,7 +112,6 @@ class MultiplayersGameActivity : AppCompatActivity() {
                         currentGame = Game(id,id_players,scores,status,id_winner,difficulty,id_owner, finished)
                     }
                 }
-                finishTheGame()
             }
         }
         games.addListenerForSingleValueEvent(gameListener)
@@ -232,6 +231,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     counter--
 
                     if (counter < 0) {
+                        counter = 0
                         startGame()
                     }
                 }
@@ -244,6 +244,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
         }
         else{
             finishGame()
+            finishTheGame()
         }
     }
 
@@ -254,7 +255,6 @@ class MultiplayersGameActivity : AppCompatActivity() {
         currentGame?.id?.let{
             database.child("game").child(it).child("finished").setValue(finishedString)
         }
-        findCurrentUser()
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
