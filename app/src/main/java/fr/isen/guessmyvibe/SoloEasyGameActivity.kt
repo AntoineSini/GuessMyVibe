@@ -54,8 +54,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance()
 
-        findCurrentUser()
-        findCurrentGame()
+
         requestRandomFlag()
 
     }
@@ -112,7 +111,9 @@ class SoloEasyGameActivity : AppCompatActivity() {
                     }
                 }
             }
+
         }
+        setPoints()
         games.addListenerForSingleValueEvent(gameListener)
     }
 
@@ -242,6 +243,7 @@ class SoloEasyGameActivity : AppCompatActivity() {
             buttonsListener()
         }
         else{
+            setPoints()
             finishGame()
         }
     }
@@ -290,6 +292,8 @@ class SoloEasyGameActivity : AppCompatActivity() {
                 flags = Gson().fromJson(response, Flags::class.java)
                 flags?.results?.size?.let{
                     size=it
+                    findCurrentUser()
+                    findCurrentGame()
                     startGame()
                 }
 

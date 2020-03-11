@@ -114,6 +114,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
                 }
             }
         }
+        setPoints()
         games.addListenerForSingleValueEvent(gameListener)
     }
 
@@ -243,6 +244,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
             buttonsListener()
         }
         else{
+            setPoints()
             finishGame()
             finishTheGame()
         }
@@ -251,14 +253,13 @@ class MultiplayersGameActivity : AppCompatActivity() {
     fun setPoints() {
         currentGame?.id?.let{
 
-            database.child("game").child(it).child("score").child("id_player").setValue(currentUser?.id)
-            database.child("game").child(it).child("score").child("id_game").setValue(it)
-            database.child("game").child(it).child("score").child("score").setValue(points.toString())
+            database.child("game").child(it).child("scores").child("id_player").setValue(currentUser?.id)
+            database.child("game").child(it).child("scores").child("id_game").setValue(it)
+            database.child("game").child(it).child("scores").child("score").setValue(points.toString())
         }
    }
 
     fun finishGame(){
-        setPoints()
         var finished : Int = currentGame?.finished?.toInt() as Int
         finished++
         val finishedString = finished.toString()
@@ -282,6 +283,8 @@ class MultiplayersGameActivity : AppCompatActivity() {
                 flags = Gson().fromJson(response, Flags::class.java)
                 flags?.results?.size?.let{
                     size=it
+                    findCurrentUser()
+                    findCurrentGame()
                     startGame()
                 }
 
