@@ -14,7 +14,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.firebase.auth.FirebaseAuth
-<<<<<<< HEAD
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -22,14 +21,9 @@ import com.google.gson.Gson
 import fr.isen.guessmyvibe.classes.Flags
 import fr.isen.guessmyvibe.classes.User
 import fr.isen.guessmyvibe.classes.statusList
-=======
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.gson.Gson
-import fr.isen.guessmyvibe.classes.Flags
 import fr.isen.guessmyvibe.classes.Game
-import fr.isen.guessmyvibe.classes.User
->>>>>>> master
+import kotlinx.android.synthetic.main.activity_new_room.*
 import kotlinx.android.synthetic.main.activity_solo_easy.*
 import kotlin.random.Random.Default.nextInt
 
@@ -39,19 +33,14 @@ class SoloEasyGameActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     lateinit var database: DatabaseReference
     lateinit var storage : FirebaseStorage
-<<<<<<< HEAD
-    var currentUser : User? = null
-=======
-    lateinit var userArray : ArrayList<User>
     var currentUser : User? = null
     var currentGame : Game? = null
->>>>>>> master
 
     var flags: Flags? = null
     var size : Int = 0
     var response: Int = 0
     var points: Int = 0
-    var pts : Int = null
+    var pts : Int = 0
     var STEP =0
 
 
@@ -65,10 +54,8 @@ class SoloEasyGameActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance()
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
+        findCurrentUser()
+        findCurrentGame()
         requestRandomFlag()
 
     }
@@ -93,12 +80,12 @@ class SoloEasyGameActivity : AppCompatActivity() {
                         currentUser = User(id, email, username, level, id_games)
                     }
                 }
-                textAdapt()
             }
         }
         users.addValueEventListener(userListener)
     }
-    fun findGamesFromUser() {
+
+    fun findCurrentGame(){
         val games = database.child("game")
         val gameListener = object : ValueEventListener {
 
@@ -108,32 +95,25 @@ class SoloEasyGameActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                val arrayGames = ArrayList<Game>()
+                var lastGame = currentUser?.id_games?.last()
+
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
-                    currentUser?.id_games?.let{
-                        for(id in it){
-                            if(p["id"] == id){
-                                val id = p["id"] as String
-                                val id_players = p["id_players"] as ArrayList<String>
-                                //val scores = p["scores"] as ArrayList<>
-                                val status = p["status"] as String
-                                val id_winner = p["id_winner"]
-                                val theme = p["theme"] as String
-                                val difficulty = p["difficulty"] as String
-                                val id_owner = p["id_owner"] as String
-                                val finished = p["finished"] as String
-                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished))
-                            }
-                        }
+                    if (p["id"] == lastGame) {
+                        val id = p["id"] as String
+                        val id_players = p["id_players"] as ArrayList<String>
+                        //val scores = p["scores"] as ArrayList<>
+                        val status = p["status"] as String
+                        val id_winner = p["id_winner"]
+                        val difficulty = p["difficulty"] as String
+                        val id_owner = p["id_owner"] as String
+                        val finished = p["finished"] as String
+                        currentGame= Game(id, id_players, null, status, id_winner, difficulty, id_owner, finished)
                     }
                 }
-                arrayGamesOfUser = arrayGames
-                recyclerHandler()
             }
         }
-
-        games.addValueEventListener(gameListener)
+        games.addListenerForSingleValueEvent(gameListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -276,22 +256,18 @@ class SoloEasyGameActivity : AppCompatActivity() {
 
     }
 
-    fun finishGame(){
-<<<<<<< HEAD
-        var finished : Int = currentGame?.finished?.toInt() as Int
+    fun finishGame() {
+        var finished: Int = currentGame?.finished?.toInt() as Int
         finished++
         val finishedString = finished.toString()
-        currentGame?.id?.let{
+        currentGame?.id?.let {
             database.child("game").child(it).child("finished").setValue(finishedString)
         }
         currentGame?.status = statusList[2]
         currentGame?.id?.let {
             database.child("game").child(it).child("status").setValue(currentGame?.status)
         }
-=======
-
         setPoints()
->>>>>>> master
         intent= Intent(this, EndSoloActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)

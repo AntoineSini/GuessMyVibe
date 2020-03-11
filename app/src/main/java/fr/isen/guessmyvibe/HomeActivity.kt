@@ -91,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
         arrayScore.add(Score("321","4321","24"))
         arrayScore.add(Score("666","6666","66"))
         val newGame = Game(key, arraySingleUser, arrayScore,
-            statusList[0],null,"Solo",currentUser?.id as String,"0")
+            statusList[1],null,"Solo",currentUser?.id as String,"0")
         database.child("game").child(key).setValue(newGame)
 
 
