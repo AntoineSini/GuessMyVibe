@@ -13,14 +13,24 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
 import fr.isen.guessmyvibe.classes.Flags
+import fr.isen.guessmyvibe.classes.User
+import fr.isen.guessmyvibe.classes.statusList
 import kotlinx.android.synthetic.main.activity_solo_easy.*
 import kotlin.random.Random.Default.nextInt
 
 
 class SoloEasyGameActivity : AppCompatActivity() {
 
+    lateinit var auth: FirebaseAuth
+    lateinit var database: DatabaseReference
+    lateinit var storage : FirebaseStorage
+    var currentUser : User? = null
 
     var flags: Flags? = null
     var size : Int = 0
@@ -33,6 +43,12 @@ class SoloEasyGameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solo_easy)
+
+        auth = FirebaseAuth.getInstance()
+        database = FirebaseDatabase.getInstance().reference
+        storage = FirebaseStorage.getInstance()
+
+
         requestRandomFlag()
 
     }
@@ -167,6 +183,16 @@ class SoloEasyGameActivity : AppCompatActivity() {
     }
 
     fun finishGame(){
+        var finished : Int = currentGame?.finished?.toInt() as Int
+        finished++
+        val finishedString = finished.toString()
+        currentGame?.id?.let{
+            database.child("game").child(it).child("finished").setValue(finishedString)
+        }
+        currentGame?.status = statusList[2]
+        currentGame?.id?.let {
+            database.child("game").child(it).child("status").setValue(currentGame?.status)
+        }
         intent= Intent(this, EndSoloActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
