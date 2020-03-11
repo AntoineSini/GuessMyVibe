@@ -11,7 +11,6 @@ class Game (
     var scores : ArrayList<Score>? = null,
     var status : String,
     var id_winner : String? = null,
-    var theme : String,
     var difficulty : String,
     var id_owner: String,
     var finished : String
