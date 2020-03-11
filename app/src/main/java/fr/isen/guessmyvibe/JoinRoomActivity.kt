@@ -79,11 +79,10 @@ class JoinRoomActivity : AppCompatActivity() {
                         //val scores = p["scores"] as ArrayList<>
                         val status = p["status"] as String
                         val id_winner = p["id_winner"]
-                        val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
                         val id_owner = p["id_owner"] as String
                         val finished = p["finished"] as String
-                        game = Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished)
+                        game = Game(id, id_players, null, status, id_winner, difficulty, id_owner, finished)
                     }
                 }
                 joinGameWithUser()
@@ -148,9 +147,14 @@ class JoinRoomActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
+            }else if (status == statusList[1]){
+                Toast.makeText(this, "This game is currently playing :o", Toast.LENGTH_LONG)
             }
-            else{
-                Toast.makeText(this,"This game does not exist",Toast.LENGTH_LONG).show()
+            else if (status == statusList[2]){
+                Toast.makeText(this,"This gameis finished !",Toast.LENGTH_LONG).show()
+            }
+            else {
+                Toast.makeText(this, "This game does not exist :(",Toast.LENGTH_LONG).show()
             }
         }
     }

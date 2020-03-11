@@ -6,5 +6,5 @@ import com.google.firebase.database.IgnoreExtraProperties
 class Score(
     var id_player : String,
     var id_game: String,
-    var score: Int?
+    var score: String?
 )

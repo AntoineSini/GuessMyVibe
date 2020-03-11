@@ -16,10 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
-import fr.isen.guessmyvibe.classes.Flags
-import fr.isen.guessmyvibe.classes.Game
-import fr.isen.guessmyvibe.classes.User
-import fr.isen.guessmyvibe.classes.statusList
+import fr.isen.guessmyvibe.classes.*
 import kotlinx.android.synthetic.main.activity_multiplayers_game.*
 import kotlin.random.Random
 
@@ -106,14 +103,13 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     if (p["id"] == lastGame) {
                         val id = p["id"] as String
                         val id_players = p["id_players"] as ArrayList<String>
-                        //val scores = p["scores"] as ArrayList<>
+                        val scores = p["scores"] as ArrayList<Score>
                         val status = p["status"] as String
                         val id_winner = p["id_winner"]
-                        val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
                         val id_owner = p["id_owner"] as String
                         val finished = p["finished"] as String
-                        currentGame = Game(id,id_players,null,status,id_winner,theme,difficulty,id_owner, finished)
+                        currentGame = Game(id,id_players,scores,status,id_winner,difficulty,id_owner, finished)
                     }
                 }
                 finishTheGame()
