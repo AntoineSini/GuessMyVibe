@@ -16,13 +16,16 @@ class EndSoloActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_end_solo)
 
-        pointsTextView.setText(POINTS.toString() + " POINTS !")
-
+        showPoints()
 
         replayButton.setOnClickListener{
             intent= Intent(this, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+    }
+
+    fun showPoints(){
+        pointsTextView.setText(POINTS.toString() + " POINTS !")
     }
 }
