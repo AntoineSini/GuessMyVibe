@@ -34,8 +34,6 @@ class SoloEasyGameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_solo_easy)
         requestRandomFlag()
-        //var random = getRandomIndex()
-
 
     }
 
