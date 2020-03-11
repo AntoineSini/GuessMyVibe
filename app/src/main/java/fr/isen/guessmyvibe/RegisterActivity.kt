@@ -66,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
     fun addUserToDatabase(){
         val id = auth.currentUser?.uid
         id?.let{
-            val newUser = User(it, emailTextInput.text.toString(), null, "0", null)
+            val newUser = User(it, emailTextInput.text.toString(), emailTextInput.text.toString(), "0", null)
             //val key = database.child("user").push().key ?: ""
             database.child("user").child(it).setValue(newUser)
         }
