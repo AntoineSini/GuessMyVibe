@@ -58,7 +58,7 @@ class JoinRoomActivity : AppCompatActivity() {
                 }
             }
         }
-        users.addValueEventListener(userListener)
+        users.addListenerForSingleValueEvent(userListener)
     }
     fun findGameById(idGame: String){
 
@@ -86,13 +86,39 @@ class JoinRoomActivity : AppCompatActivity() {
                         game = Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished)
                     }
                 }
-                joinTheGame()
+                joinGameWithUser()
             }
         })
     }
+    fun joinGameWithUser() {
+        val users = database.child("user")
+        val userListener = object : ValueEventListener {
 
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if (p["id"] == auth.currentUser?.uid) {
+                        val id = p["id"] as String
+                        val email = p["email"] as String
+                        val username = p["username"]
+                        val level = p["level"] as String
+                        val id_games = p["id_games"] as ArrayList<String>?
+                        currentUser = User(id, email, username, level, id_games)
+                    }
+                }
+                joinTheGame()
+            }
+        }
+        users.addListenerForSingleValueEvent(userListener)
+    }
     fun joinTheGame() {
         var join = true
+
         game?.id_players?.let{
             for (id in it){
                 if (id == currentUser?.id){
@@ -106,12 +132,17 @@ class JoinRoomActivity : AppCompatActivity() {
             if (game != null && status == statusList[0]) {
                 currentUser?.let { user ->
                     game?.let { game ->
-                        game?.id_players?.add(user.id)
-                        currentUser?.id_games?.add(game.id)
-                        database.child("user").child(user.id).child("id_games")
-                            .setValue(user.id_games)
-                        database.child("game").child(game.id).child("id_players")
-                            .setValue(game.id_players)
+                        if (user.id_games == null){
+                            val arrayGames = ArrayList<String>()
+                            arrayGames.add(game.id)
+                            user.id_games = arrayGames
+                            game.id_players.add(user.id)
+                        }
+                        else{
+                            user.id_games?.add(game.id)
+                        }
+                        database.child("user").child(user.id).child("id_games").setValue(user.id_games)
+                        database.child("game").child(game.id).child("id_players").setValue(game.id_players)
                         intent = Intent(this, NewRoomActivity::class.java)
                         startActivity(intent)
                     }
