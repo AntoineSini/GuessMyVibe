@@ -66,6 +66,7 @@ class ProfileActivity : AppCompatActivity() {
         usernameTextView.setOnClickListener{
             alertDialog("Nom d'utilisateur")
         }
+
         displayPP()
 
         findCurrentUser()
@@ -96,6 +97,7 @@ class ProfileActivity : AppCompatActivity() {
         if (currentUser?.username != null) {
             val string = currentUser?.username
             usernameTextView.text = string
+            level.text = currentUser?.level
         }
     }
     fun recyclerHandler() {
@@ -192,11 +194,10 @@ class ProfileActivity : AppCompatActivity() {
                                 //val scores = p["scores"] as ArrayList<>
                                 val status = p["status"] as String
                                 val id_winner = p["id_winner"]
-                                val theme = p["theme"] as String
                                 val difficulty = p["difficulty"] as String
                                 val id_owner = p["id_owner"] as String
                                 val finished = p["finished"] as String
-                                arrayGames.add(Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished))
+                                arrayGames.add(Game(id, id_players, null, status, id_winner, difficulty, id_owner, finished))
                             }
                         }
                     }

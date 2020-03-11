@@ -58,6 +58,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     database.child("game").child(it).child("status").setValue(currentGame?.status)
                 }
                 intent = Intent(this, EndSoloActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
         }
@@ -108,11 +109,10 @@ class MultiplayersGameActivity : AppCompatActivity() {
                         //val scores = p["scores"] as ArrayList<>
                         val status = p["status"] as String
                         val id_winner = p["id_winner"]
-                        val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
                         val id_owner = p["id_owner"] as String
                         val finished = p["finished"] as String
-                        currentGame = Game(id,id_players,null,status,id_winner,theme,difficulty,id_owner, finished)
+                        currentGame = Game(id,id_players,null,status,id_winner,difficulty,id_owner, finished)
                     }
                 }
                 finishTheGame()

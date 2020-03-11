@@ -1,5 +1,8 @@
 package fr.isen.guessmyvibe
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import fr.isen.guessmyvibe.classes.Game
 import fr.isen.guessmyvibe.classes.User
 import fr.isen.guessmyvibe.classes.statusList
 
 import kotlinx.android.synthetic.main.activity_new_room.*
+import kotlinx.android.synthetic.main.activity_profile.*
 
 
 class NewRoomActivity : AppCompatActivity() {
@@ -31,6 +36,15 @@ class NewRoomActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
         storage = FirebaseStorage.getInstance()
+
+        findCurrentUser()
+        var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        cliccopy.setOnClickListener {
+            val clip: ClipData =
+                ClipData.newPlainText("simple text", idGameTextView.text.toString())
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(this, "Copied in the clipboard !", Toast.LENGTH_LONG).show()
+        }
 
 
         playButton.setOnClickListener{
@@ -56,8 +70,10 @@ class NewRoomActivity : AppCompatActivity() {
             }
 
         }
-        findCurrentUser()
+
     }
+
+
     override fun onDestroy() {
         super.onDestroy()
         var sizeMinus = 0
@@ -66,15 +82,19 @@ class NewRoomActivity : AppCompatActivity() {
             sizeMinus--
         }
         currentGame?.id?.let {
-            if (currentUser?.id == currentGame?.id_owner) {
-                database.child("game").child(it).removeValue()
-                currentUser?.id?.let {userId ->
-                    database.child ("user").child(userId).child("id_games").child(sizeMinus.toString()).removeValue()
-                }
-            } else {
-                currentUser?.id?.let{userId ->
-                    deleteRightUser(userId)
-                    database.child("user").child(userId).child("id_games").child(sizeMinus.toString()).removeValue()
+            if(currentGame?.status == statusList[0]) {
+                if (currentUser?.id == currentGame?.id_owner) {
+                    database.child("game").child(it).removeValue()
+                    currentUser?.id?.let { userId ->
+                        database.child("user").child(userId).child("id_games")
+                            .child(sizeMinus.toString()).removeValue()
+                    }
+                } else {
+                    currentUser?.id?.let { userId ->
+                        deleteRightUser(userId)
+                        database.child("user").child(userId).child("id_games")
+                            .child(sizeMinus.toString()).removeValue()
+                    }
                 }
             }
         }
@@ -106,6 +126,7 @@ class NewRoomActivity : AppCompatActivity() {
         }
         games.addListenerForSingleValueEvent(gameListener)
     }
+
     fun findCurrentUser() {
         val users = database.child("user")
         val userListener = object : ValueEventListener {
@@ -153,13 +174,13 @@ class NewRoomActivity : AppCompatActivity() {
                         //val scores = p["scores"] as ArrayList<>
                         val status = p["status"] as String
                         val id_winner = p["id_winner"]
-                        val theme = p["theme"] as String
                         val difficulty = p["difficulty"] as String
                         val id_owner = p["id_owner"] as String
                         val finished = p["finished"] as String
-                        currentGame= Game(id, id_players, null, status, id_winner,theme, difficulty, id_owner, finished)
+                        currentGame= Game(id, id_players, null, status, id_winner, difficulty, id_owner, finished)
                     }
                 }
+                idGameTextView.text = currentGame?.id
                 findUserArray()
             }
         }

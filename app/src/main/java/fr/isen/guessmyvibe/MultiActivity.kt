@@ -102,7 +102,8 @@ class MultiActivity : AppCompatActivity() {
             arraySingleUser.add(it)
         }
         val key = database.child("game").push().key ?: ""
-        val newGame = Game(key, arraySingleUser,null,statusList[0],null,"","Multiplayer",currentUser?.id as String,"0")
+
+        val newGame = Game(key, arraySingleUser,null,statusList[0],null,"Multiplayer",currentUser?.id as String,"0")
         database.child("game").child(key).setValue(newGame)
 
 

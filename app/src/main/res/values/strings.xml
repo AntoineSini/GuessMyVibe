@@ -46,4 +46,7 @@
     <string name="confirm">Confirmez le mot de passe</string>
     <string name="informations">Remplissez le formulaire, c\'est rapide !</string>
     <string name="finished">La partie est terminée !</string>
+    <string name="cliccopy">Cliquez ici pour le copier !</string>
+    <string name="level">Niv.</string>
+    <string name="winner">Gagnant :</string>
 </resources>
