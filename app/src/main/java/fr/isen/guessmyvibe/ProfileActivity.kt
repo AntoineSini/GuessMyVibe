@@ -191,13 +191,23 @@ class ProfileActivity : AppCompatActivity() {
                             if(p["id"] == id){
                                 val id = p["id"] as String
                                 val id_players = p["id_players"] as ArrayList<String>
-                                //val scores = p["scores"] as ArrayList<>
+                                //val scores = p["scores"] as HashMap<String, String>
+                                val scores = p["scores"] as HashMap<String, String>
+                                val currentScore = scores[currentUser?.id] as HashMap<String, String>
+                                val score : Score? = null
+                                score?.score = currentScore["score"] as String
+                                score?.id_game = currentScore["id_game"] as String
+                                score?.id_player = currentScore["id_player"] as String
+                                val scoreslist : ArrayList<Score> ?= null
+                                score?.let{
+                                    scoreslist?.add(it)
+                                }
                                 val status = p["status"] as String
                                 val id_winner = p["id_winner"]
                                 val difficulty = p["difficulty"] as String
                                 val id_owner = p["id_owner"] as String
                                 val finished = p["finished"] as String
-                                arrayGames.add(Game(id, id_players, null, status, id_winner, difficulty, id_owner, finished))
+                                arrayGames.add(Game(id, id_players, scoreslist, status, id_winner, difficulty, id_owner, finished))
                             }
                         }
                     }

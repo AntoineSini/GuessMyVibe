@@ -223,7 +223,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
             }
 
             chronoView.setOnChronometerTickListener(object : Chronometer.OnChronometerTickListener {
-                var counter = 9
+                var counter = 10
                 override fun onChronometerTick(chronometer: Chronometer) {
 
                     chronoView.setText(counter.toString() + "")
