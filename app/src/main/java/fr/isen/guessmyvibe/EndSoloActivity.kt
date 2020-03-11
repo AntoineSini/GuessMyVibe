@@ -13,6 +13,7 @@ import fr.isen.guessmyvibe.classes.Score
 import fr.isen.guessmyvibe.classes.User
 
 import kotlinx.android.synthetic.main.activity_end_solo.*
+import java.util.Collections.max
 
 
 class EndSoloActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class EndSoloActivity : AppCompatActivity() {
     lateinit var database: DatabaseReference
     lateinit var storage : FirebaseStorage
     var currentUser : User? = null
+    var winnername : String? = null
     var currentGame : Game? = null
     private var SCORE = 0
 
@@ -100,6 +102,32 @@ class EndSoloActivity : AppCompatActivity() {
         }
         games.addListenerForSingleValueEvent(gameListener)
     }
+    fun findUserById(idUser : String) {
+
+        val users = database.child("user")
+        users.addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if(p["id"] == idUser) {
+                        winnername = p["username"] as String
+                        if(winnername == null){
+                            winnername = p["email"]
+                        }
+                    }
+                }
+                currentGame?.id?.let{
+                    database.child("game").child(it).child("id_winner").setValue(winnername)
+                }
+            }
+        })
+    }
 
     fun showPoints(){
 
@@ -116,7 +144,27 @@ class EndSoloActivity : AppCompatActivity() {
                 for (postSnapshot in p0.children) {
                     val p = postSnapshot.value as HashMap<String, String>
                     if (p["id"] == currentGame?.id) {
+                        val status = p["status"] as String
                         val scores = p["scores"] as HashMap<String, String>
+                        if(status == "Finished")
+                        {
+                            var max = 0
+                            lateinit var winner : String
+                            for (i in scores)
+                            {
+                                val currentScore = i.value as HashMap<String, String>
+                                val playerScore = currentScore["score"] as String
+                                if (playerScore.toInt() > max)
+                                {
+                                    max = playerScore.toInt()
+                                    winner = i.key
+                                    findUserById(winner)
+                                }
+
+                            }
+
+
+                        }
                         val currentScore = scores[currentUser?.id] as HashMap<String, String>
                         val playerScore = currentScore["score"] as String
                         pointsTextView.setText("Vous avez marqué " + playerScore + " points!")
