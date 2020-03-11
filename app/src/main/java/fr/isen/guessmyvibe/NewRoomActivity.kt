@@ -72,15 +72,40 @@ class NewRoomActivity : AppCompatActivity() {
                     database.child ("user").child(userId).child("id_games").child(sizeMinus.toString()).removeValue()
                 }
             } else {
-                //database.child("game").child(it).child("id_users").child(sizeMinus.toString()).removeValue()
                 currentUser?.id?.let{userId ->
+                    deleteRightUser(userId)
                     database.child("user").child(userId).child("id_games").child(sizeMinus.toString()).removeValue()
                 }
             }
         }
 
     }
+    fun deleteRightUser(idPlayer : String){
+        val games = database.child("game")
+        val gameListener = object : ValueEventListener {
 
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("bug listener", "loadUser:onCancelled", p0.toException())
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (postSnapshot in p0.children) {
+                    val p = postSnapshot.value as HashMap<String, String>
+                    if(p["id"] == currentGame?.id) {
+                        val id_players = p["id_players"] as ArrayList<String>
+                        for (i in 0 until id_players.size) {
+                            if (id_players[i] == idPlayer) {
+                                database.child("game").child(p["id"] as String).child("id_players")
+                                    .child(i.toString()).removeValue()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        games.addValueEventListener(gameListener)
+    }
     fun findCurrentUser() {
         val users = database.child("user")
         val userListener = object : ValueEventListener {
