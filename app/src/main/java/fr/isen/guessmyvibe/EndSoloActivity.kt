@@ -122,12 +122,9 @@ class EndSoloActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-                if(currentGame?.difficulty == "Multiplayer")
-                {
                         currentGame?.id?.let{
                         database.child("game").child(it).child("id_winner").setValue(winnername)
-                    }
+                    
                 }
             }
         })
