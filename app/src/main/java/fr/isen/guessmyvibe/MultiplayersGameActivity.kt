@@ -236,6 +236,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     counter--
 
                     if (counter < 0) {
+                        counter=0
                         startGame()
                     }
                 }
