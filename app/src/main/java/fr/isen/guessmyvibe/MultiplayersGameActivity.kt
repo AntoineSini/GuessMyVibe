@@ -58,6 +58,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
                     database.child("game").child(it).child("status").setValue(currentGame?.status)
                 }
                 intent = Intent(this, EndSoloActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
         }
