@@ -136,11 +136,12 @@ class JoinRoomActivity : AppCompatActivity() {
                             val arrayGames = ArrayList<String>()
                             arrayGames.add(game.id)
                             user.id_games = arrayGames
-                            game.id_players.add(user.id)
+
                         }
                         else{
                             user.id_games?.add(game.id)
                         }
+                        game.id_players.add(user.id)
                         database.child("user").child(user.id).child("id_games").setValue(user.id_games)
                         database.child("game").child(game.id).child("id_players").setValue(game.id_players)
                         intent = Intent(this, NewRoomActivity::class.java)

@@ -16,6 +16,7 @@
     <string name="categoryTextView">Choisir un theme de jeu</string>
     <string name="createButton">Creer une salle de jeu</string>
     <string name="popButton">Pop</string>
+    <string name="country">De quel pays s\'agit-il ?</string>
     <string name="rockButton">Rock</string>
     <string name="jazzButton">Jazz</string>
     <string name="bluesButton">Blues</string>
