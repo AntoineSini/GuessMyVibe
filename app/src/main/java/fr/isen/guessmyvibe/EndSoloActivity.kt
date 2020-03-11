@@ -120,6 +120,14 @@ class EndSoloActivity : AppCompatActivity() {
                         val currentScore = scores[currentUser?.id] as HashMap<String, String>
                         val playerScore = currentScore["score"] as String
                         pointsTextView.setText("Vous avez marqué " + playerScore + " points!")
+                        var newLevel : Float = 0f
+                        currentUser?.level?.let{
+                            newLevel = it.toFloat() + playerScore.toFloat()
+                        }
+                        currentUser?.id?.let {
+                            database.child("user").child(it).child("level").setValue(newLevel.toString())
+                        }
+
                     }
                 }
             }
