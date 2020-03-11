@@ -24,6 +24,7 @@ class RecyclerAdapterProfile(val content: ArrayList<Game>): RecyclerView.Adapter
         fun bind(content: Game?){
             view.winner.text = content?.id_winner
             view.difficulty.text = content?.difficulty
+            view.score.text = content?.scores?.get(0).toString() + " points"
         }
     }
 }
