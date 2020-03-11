@@ -72,9 +72,10 @@ class NewRoomActivity : AppCompatActivity() {
                     database.child ("user").child(userId).child("id_games").child(sizeMinus.toString()).removeValue()
                 }
             } else {
-                database.child("game").child(it).child("id_users").child(sizeMinus.toString()).removeValue()
-                database.child("user").child(it).child("id_games").child(sizeMinus.toString()).removeValue()
-
+                //database.child("game").child(it).child("id_users").child(sizeMinus.toString()).removeValue()
+                currentUser?.id?.let{userId ->
+                    database.child("user").child(userId).child("id_games").child(sizeMinus.toString()).removeValue()
+                }
             }
         }
 
