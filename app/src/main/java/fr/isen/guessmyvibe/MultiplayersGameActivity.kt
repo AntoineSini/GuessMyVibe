@@ -45,19 +45,7 @@ class MultiplayersGameActivity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
 
         findCurrentUser()
-
         requestRandomFlag()
-
-
-        /*finished.setOnClickListener{
-            var finished : Int = currentGame?.finished?.toInt() as Int
-            finished++
-            val finishedString = finished.toString()
-            currentGame?.id?.let{
-                database.child("game").child(it).child("finished").setValue(finishedString)
-            }
-            findCurrentUser()
-        }*/
     }
 
     /// ANTOINE ////
@@ -270,8 +258,6 @@ class MultiplayersGameActivity : AppCompatActivity() {
             database.child("game").child(it).child("finished").setValue(finishedString)
         }
         findCurrentUser()
-        /*intent= Intent(this, EndSoloActivity::class.java)
-        startActivity(intent)*/
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

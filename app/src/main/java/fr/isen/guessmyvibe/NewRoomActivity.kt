@@ -138,7 +138,7 @@ class NewRoomActivity : AppCompatActivity() {
                 findUserArray()
             }
         }
-        games.addListenerForSingleValueEvent(gameListener)
+        games.addValueEventListener(gameListener)
     }
 
     fun findUserArray(){
